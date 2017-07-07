@@ -15,10 +15,18 @@
 #include <dirent.h>
 #include <sys/errno.h>
 #include <sys/mman.h>
+#include <sys/param.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+# include <dirent.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <wait.h>
 #include "../ft_p_server.h"
 
 t_svr_env g_svr_env;
-
+char        *g_cmd_arr[] = {"CDUP", "PWD", "LIST"};
 int check_port(const char *str)
 {
 	while (*str) {
@@ -117,10 +125,9 @@ void ft_ls()
 	num_files = 0;
 	if (!(dir = opendir(".")))
 		printf("\x1b[31mERROR: cannot open dir\n\x1b[0m");
-	printf("dir len: %d\n", dir->__dd_len);
 	while (readdir(dir) != NULL)
 		num_files++;
-	lseek(dir->__dd_fd, 0, SEEK_SET);
+	lseek(dirfd(dir), 0, SEEK_SET);
 	printf("Num file: %zu\n", num_files);
 	errno = 0;
 	while ((dre = readdir(dir)) != NULL) {
@@ -172,7 +179,7 @@ void ft_put(int client, char **argv)
 
 	if ((fname = strrchr(argv[1], '/')) == NULL)
 		fname = argv[1];
-	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC | O_EVTONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
+	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 		return;
 	recv_size = RCVBUFSIZE;
 	while (recv_size == RCVBUFSIZE) {

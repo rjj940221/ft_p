@@ -16,5 +16,5 @@ typedef struct		s_svr_env
 }					t_svr_env;
 
 extern t_svr_env	g_svr_env;
-
+extern char         *g_cmd_arr[];
 #endif
