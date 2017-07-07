@@ -12,7 +12,7 @@ aux_source_directory(libft LIBFT_SRC)
 include_directories(${CMAKE_SOURCE_DIR}/libft)
 add_library(libft STATIC ${LIBFT_SRC})
 
-add_executable(client ${CLT_SRC} client_src/ft_ls.c client_src/ft_cd.c client_src/ft_get.c client_src/ft_quit.c client_src/ft_pwd.c)
+add_executable(client ${CLT_SRC})
 target_link_libraries(client libft)
 add_executable(server ${SVR_SRC})
 target_link_libraries(server libft)

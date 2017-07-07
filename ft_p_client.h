@@ -28,18 +28,6 @@ typedef struct s_clt_env
 	int		svr_cmd_sock;
 } t_clt_env;
 
-typedef struct s_command
-{
-	char *cmd;
-	char **av;
-} t_cmd;
-
-typedef struct s_cmd_responce
-{
-	short code;
-	char *msg;
-} t_cmd_rsp;
-
 typedef void(*builtin)(char **argv);
 
 typedef struct 	s_builtin_cmd

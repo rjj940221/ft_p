@@ -4,17 +4,7 @@
 
 //#include <bits/socket_type.h>
 //#include <bits/socket.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <libft.h>
-#include <dirent.h>
-#include <sys/errno.h>
-#include <sys/mman.h>
+
 #include "../ft_p_server.h"
 
 t_svr_env g_svr_env;
@@ -275,40 +265,33 @@ void server_loop(int sockid)
 	}
 }
 
-void print2darr(char **darr)
+void	ft_svr_init_connection(int port)
 {
-	while (*darr)
-		printf("%s\n", *(darr++));
+	g_svr_env.svr_id = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (g_svr_env.svr_id == -1)
+		ft_print_exit("Failed to create socket");
+	g_svr_env.sock_in.sin_family = AF_INET;
+	g_svr_env.sock_in.sin_port = htons((uint16_t)port);
+	g_svr_env.sock_in.sin_addr.s_addr = htonl(INADDR_ANY);
+	if (bind(g_svr_env.svr_id, (const struct sockaddr *) &g_svr_env.sock_in, sizeof(t_tcp_sock_in)) == -1)
+		ft_print_exit("failed to bind socket\n");
+	if (listen(g_svr_env.svr_id, MAX_CLIENTS) == -1)
+		ft_print_exit("socket failed to create listener\n");
 }
 
 int main(int ac, char **av)
 {
-	int sockid;
-	t_tcp_sock_in sock_in;
+	int	port;
 
-	if (ac < 2 || check_port(av[1]) == -1) {
+	if (ac < 2 ) {
 		printf("please use %s port_num \n\te.g %s 8080\n", av[0], av[0]);
 		return (0);
 	}
-	sockid = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sockid == -1) {
-		printf("Failed to create socket");
-		return 0;
-	}
-	sock_in.sin_family = AF_INET;
-	sock_in.sin_port = htons((uint16_t) atoi(av[1]));
-	sock_in.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(sockid, (const struct sockaddr *) &sock_in, sizeof(sock_in)) == -1) {
-		printf("failed to bind socket\n");
-		close(sockid);
-		exit(1);
-	}
-	if (listen(sockid, MAX_CLIENTS) == -1) {
-		printf("socket failed to create listener\n");
-		close(sockid);
-		exit(1);
-	}
-	//todo: init svr_env properlt
+	if (ac == 2)
+		port = atoi(av[1]);
+	else if ()
+
+		check_port(av[1]) == -1
 	g_svr_env.svrroot = get_pwd();
 
 	server_loop(sockid);
