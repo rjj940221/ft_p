@@ -12,7 +12,7 @@ void ft_quit(char **argv)
 	cmd.cmd= "QUIT";
 	cmd.av = ++argv;
 	ft_send_cmd(cmd);
-	ft_get_cmd_responce();
+	rsp = ft_get_cmd_responce();
 	if(rsp.code >= 200 && rsp.code < 300)
 	{
 		if (g_clt_env.svr_cmd_sock > -1)

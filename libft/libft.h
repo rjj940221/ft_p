@@ -90,6 +90,7 @@ size_t				ft_strlcat(char *const dst, const char *const src,
 								size_t len);
 char				*ft_strchr(const char *str, int c);
 char				*ft_strrchr(const char *str, int c);
+void 				ft_strreplace_char(char *str, char find, char replace);
 char				*ft_strstr(const char *big, const char *little);
 char				*ft_strnstr(const char *big, const char *little,
 								size_t len);

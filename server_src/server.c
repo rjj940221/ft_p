@@ -9,7 +9,7 @@
 #include <wait.h>
 #include "ft_p_server.h"
 
-t_svr_env g_svr_env = (t_svr_env) {-1, -1, NULL};
+t_svr_env g_svr_env = (t_svr_env) {-1, -1, -1, NULL};
 
 char *get_client_data(int clntSocket)
 {
@@ -32,67 +32,6 @@ char *get_client_data(int clntSocket)
 	}
 	printf("Receved: %s\n", line);
 	return line;
-}
-
-char *get_pwd()
-{
-	char *buff;
-
-	buff = NULL;
-	buff = getcwd(buff, MAXPATHLEN);
-	return (buff);
-}
-
-void ft_abspath(char **str)
-{
-	char *tmp;
-	char *pwd;
-
-	pwd = get_pwd();
-	if (*str)
-	{
-		if ((*str)[0] == '~')
-		{
-			tmp = *str;
-			*str = ft_strjoin("/nfs/zfs-student-6/users/rojones", &(*str)[1]);
-			free(tmp);
-		} else if ((*str)[0] != '/')
-		{
-			tmp = pwd;
-			pwd = ft_strjoin(pwd, "/");
-			free(tmp);
-			tmp = *str;
-			*str = ft_strjoin(pwd, *str);
-			free(tmp);
-		}
-	}
-	free(pwd);
-}
-
-int ft_checkroot(char **str)
-{
-	char *pwd;
-	int re;
-
-	pwd = get_pwd();
-	re = -1;
-	printf("checking path for ..[%s]\n", *str);
-	if (strncmp(*str, "..", 2) == 0 && (strlen(pwd) == strlen(g_svr_env.svrroot)))
-	{
-		printf("\x1B[31mERROR: not in server root\n\x1b[0m");
-		free(pwd);
-		return (-1);
-	}
-	puts("make call to abspath");
-	ft_abspath(str);
-	puts("past abspath");
-	printf("checking path in root[%s]\n", *str);
-	if (strncmp(*str, g_svr_env.svrroot, strlen(g_svr_env.svrroot)) == 0)
-		re = 1;
-	else
-		printf("\x1B[31mERROR: not in server root\n\x1b[0m");
-	free(pwd);
-	return (re);
 }
 
 void ft_ls()
@@ -123,13 +62,13 @@ void ft_pwd()
 {
 	char *pwd;
 
-	pwd = get_pwd();
+	pwd = ft_get_pwd();
 	printf("PWD: %s\n", pwd);
 	if (pwd)
 		free(pwd);
 }
 
-void ft_get(int client, char **argv)
+/*void ft_get(int client, char **argv)
 {
 	int fd;
 	struct stat stat;
@@ -148,7 +87,7 @@ void ft_get(int client, char **argv)
 		return;
 	puts("pet got data");
 	send(client, data, (size_t) stat.st_size, 0);
-}
+}*/
 
 /*void ft_put(int client, char **argv)
 {
@@ -171,14 +110,6 @@ void ft_get(int client, char **argv)
 	}
 }*/
 
-void ft_cd(char **argv)
-{
-	if (ft_checkroot(&argv[1]) == 1)
-	{
-		if (chdir(argv[1]) == -1)
-			printf("\x1b[31mError: could not change to %s\n\x1b[0m", argv[1]);
-	}
-}
 
 t_bool ft_check_dir(char *dir)
 {
@@ -186,11 +117,11 @@ t_bool ft_check_dir(char *dir)
 
 	if ((fd = open(dir, O_DIRECTORY)))
 	{
-		g_svr_env.svrroot = dir;
 		close(fd);
 		return (TRUE);
 	}
 	ft_print_exit("Failed to set server root");
+	return (FALSE);
 }
 
 void search_builin(t_cmd cmd)
@@ -201,7 +132,10 @@ void search_builin(t_cmd cmd)
 	while (tmp->cmd)
 	{
 		if (strcmp(cmd.cmd, tmp->cmd) == 0)
+		{
 			(*tmp->fnc)(cmd);
+			return ;
+		}
 		tmp++;
 	}
 	printf("\x1b[mError: Command not recognised '%s'\n\x1b[0m", cmd.cmd);
@@ -211,7 +145,7 @@ void chiled()
 {
 	t_cmd cmd;
 
-	close(g_svr_env.svr_id);
+//	close(g_svr_env.svr_id); todo:uncomment for non blocking
 	while (1)
 	{
 		cmd = ft_get_cmd();
@@ -241,19 +175,18 @@ void server_loop()
 	while (1)
 	{
 		if ((g_svr_env.cln_cmd = accept(g_svr_env.svr_id, (struct sockaddr *) &client_sock, (socklen_t *) &clientsize)) < 0)
-		{
 			printf("accept failed\n");
-		} else
+		else
 		{
 			printf("got client %s\n", inet_ntoa(client_sock.sin_addr));
-			pid = fork();
-			if (pid > -1)
-			{
-				if (pid == 0)
+//			pid = fork();
+//			if (pid > -1)
+//			{
+//				if (pid == 0)
 					chiled();
-				else
-					perant(pid);
-			}
+//				else
+//					perant(pid);
+//			}
 		}
 	}
 }
@@ -284,9 +217,12 @@ int main(int ac, char **av)
 	if (ac == 2 && check_port(av[1]) == 1)
 		port = atoi(av[1]);
 	else if (ac == 4 && strcmp(av[1], "-root") && ft_check_dir(av[2]) && check_port(av[3]) == 1)
+	{
+		g_svr_env.svrroot = strdup(av[2]);
 		port = atoi(av[3]);
+	}
 	if (g_svr_env.svrroot == NULL)
-		g_svr_env.svrroot = get_pwd();
+		g_svr_env.svrroot = ft_get_pwd();
 	ft_svr_init_connection(port);
 	server_loop();
 	close(g_svr_env.svr_id);

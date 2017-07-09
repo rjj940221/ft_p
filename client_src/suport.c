@@ -76,6 +76,7 @@ t_cmd_rsp ft_get_cmd_responce()
 	char buf[2];
 	unsigned char read;
 	unsigned char r;
+	t_cmd_rsp		rsp;
 
 	read = 1;
 	r = 0;
@@ -92,5 +93,7 @@ t_cmd_rsp ft_get_cmd_responce()
 		read = ft_check_eol(buf, &r);
 		data = ft_strjoin_free_l(data, buf);
 	}
-	return (ft_parse_cmd_responce(data));
+	rsp = ft_parse_cmd_responce(data);
+	free(data);
+	return (rsp);
 }

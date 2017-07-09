@@ -26,6 +26,7 @@ typedef struct s_clt_env
 {
 	t_bool	wait_rsp;
 	int		svr_cmd_sock;
+	int 	data_sock;
 } t_clt_env;
 
 typedef void(*builtin)(char **argv);
@@ -46,8 +47,10 @@ void		ft_ls(char **argv);
 void		ft_cd(char **argv);
 void		ft_pwd(char **argv);
 void		ft_quit(char **argv);
+void 		ft_port();
 t_cmd_rsp	ft_get_cmd_responce();
-
+void 		ft_process_rsp(t_cmd_rsp	rsp);
+char		*ft_get_addr_str(int sock_id);
 void 		ft_send_cmd(t_cmd cmd);
 
 static t_builtin_cmd g_builtin_cmd[] = {

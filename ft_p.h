@@ -12,6 +12,12 @@
 
 typedef char t_bool;
 
+typedef struct	s_connection
+{
+	char	*ip;
+	int		port;
+}				t_conn;
+
 typedef struct s_command
 {
 	char *cmd;
