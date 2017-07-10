@@ -14,11 +14,11 @@ void ft_ls(t_cmd cmd)
 	num_files = 0;
 	cmd.cmd = NULL;
 	data = NULL;
-	if (g_svr_env.cln_data == -1)
+/*	if (g_svr_env.cln_data == -1)
 	{
 		ft_send_responce((t_cmd_rsp) {426, "data connection not open"});
 		return;
-	}
+	}*/
 	if (!(dir = opendir(".")))
 	{
 		ft_send_responce((t_cmd_rsp) {451, "could not open directory"});
@@ -27,16 +27,23 @@ void ft_ls(t_cmd cmd)
 	errno = 0;
 	while ((dre = readdir(dir)) != NULL)
 	{
-		ft_strjoin_free_l(data, dre->d_name);
-		ft_strjoin_free_l(data, "\n");
+		data = ft_strjoin_free_l(data, dre->d_name);
+		data = ft_strjoin_free_l(data, "\n");
 	}
 	if (errno != 0)
 		printf("\x1b[31mERROR: reading dir\n\x1b[0m");
-	ft_send_responce((t_cmd_rsp){125, "sending data"});
+	if (g_svr_env.cln_data != -1)
+		ft_send_responce((t_cmd_rsp){125, "sending data"});
+	else
+	{
+		ft_send_responce((t_cmd_rsp) {150, "sending data"});
+		ft_connect_g_conn();
+	}
 	if (send(g_svr_env.cln_data,data, ft_strlen(data), 0) != -1)
 	{
 		ft_send_responce((t_cmd_rsp) {226, "data sent"});
 		close(g_svr_env.cln_data);
+		g_svr_env.cln_data = -1;
 	}
 	else
 	{

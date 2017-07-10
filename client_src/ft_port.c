@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
+#include <wait.h>
 #include "ft_p_client.h"
 
 int ft_ip4(int port)
@@ -50,38 +51,31 @@ char *ft_get_addr_str(int sock_id)
 }
 
 
-void ft_port(int port)
+void ft_data_connection()
 {
-	int list;
 	unsigned int conlen;
 	struct sockaddr_in conin;
+
+	conlen = sizeof(conin);
+	g_clt_env.data_sock = accept(g_clt_env.data_chanle, (struct sockaddr *) &conin, &conlen);
+}
+
+void ft_port(int port)
+{
 	t_cmd_rsp rsp;
 	t_cmd cmd;
-	pid_t pid;
-	int stat;
-
 
 	cmd.cmd = "PORT";
-	list = ft_ip4(port);
-	if (listen(list, 10) == -1)
-		ft_print_exit("could not create listen port");
-	cmd.av = (char *[]) {ft_get_addr_str(list), NULL};
-	ft_send_cmd(cmd);
-	conlen = sizeof(conin);
-	if ((pid = fork()) != -1)
+	if (g_clt_env.data_chanle == -1)
 	{
-		if (pid == 0)
-		{
-			g_clt_env.data_sock = accept(list, (struct sockaddr *) &conin, &conlen);
-			close(list);
-			exit(0);
-		}
-		wait4(pid, &stat, WNOHANG, 0);
-		rsp = ft_get_cmd_responce();
-		ft_process_rsp(rsp);
-		if (rsp.code >= 400 && rsp.code < 600)
-			ft_print_exit("failed to create data port");
+		g_clt_env.data_chanle = ft_ip4(port);
+		if (listen(g_clt_env.data_chanle, 10) == -1)
+			ft_print_exit("could not create listen port");
 	}
-	else
-		ft_print_exit("failed to create data port");
+	cmd.av = (char *[]) {ft_get_addr_str(g_clt_env.data_chanle), NULL};
+	ft_send_cmd(cmd);
+	rsp = ft_get_cmd_responce();
+	ft_process_rsp(rsp);
+	if (rsp.code >= 400 && rsp.code < 600)
+			ft_print_exit("failed to create data port");
 }

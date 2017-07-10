@@ -36,6 +36,7 @@ typedef struct		s_svr_env
 	int 			svr_id;
 	char 			*svrroot;
 	t_tcp_sock_in	sock_in;
+	t_conn			data_conn;
 }					t_svr_env;
 
 extern t_svr_env	g_svr_env;
@@ -54,7 +55,7 @@ int			check_port(const char *str);
 char 		*ft_get_pwd();
 char 		*ft_abspath(char *str);
 char		*ft_check_root(char *str);
-
+void ft_connect_g_conn();
 void ft_cd(t_cmd cmd);
 void ft_quit(t_cmd cmd);
 void ft_put(t_cmd cmd);

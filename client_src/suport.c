@@ -61,12 +61,19 @@ unsigned char	ft_check_eol(char buf[2], unsigned char *r)
 
 t_cmd_rsp ft_parse_cmd_responce(char *data)
 {
-	t_cmd_rsp rsp;
-	char *tmp;
+	t_cmd_rsp	rsp;
+	char		*tmp;
+	size_t		str;
 
 	rsp.code = (short) atoi(data);
 	tmp = strchr(data, ' ');
 	rsp.msg = (tmp) ? strdup(++tmp) : NULL;
+	str  = strlen(rsp.msg);
+	if (str > 2)
+	{
+		rsp.msg[str - 1] = '\0';
+		rsp.msg[str - 2] = '\0';
+	}
 	return (rsp);
 }
 

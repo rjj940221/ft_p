@@ -6,7 +6,7 @@
 
 #include "ft_p_client.h"
 
-t_clt_env g_clt_env = (t_clt_env) {FALSE, -1};
+t_clt_env g_clt_env = (t_clt_env) {FALSE, -1, -1,-1};
 
 void connect_to_server(char **av)
 {

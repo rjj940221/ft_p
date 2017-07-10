@@ -7,6 +7,7 @@
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <wait.h>
 //#include <wait.h>
 #include "ft_p_server.h"
 

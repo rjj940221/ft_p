@@ -40,22 +40,31 @@ t_conn ft_get_conn(char *data)
 
 void ft_port(t_cmd cmd)
 {
-	t_conn conn;
-	struct sockaddr_in datacon;
+
 
 	if (!cmd.av || !cmd.av[0])
 		return (ft_send_responce((t_cmd_rsp) {501, "ip and port not specified"}));
-	conn = ft_get_conn(cmd.av[0]);
-	if (conn.ip == NULL)
+	g_svr_env.data_conn = ft_get_conn(cmd.av[0]);
+	if (g_svr_env.data_conn.ip == NULL)
 		return (ft_send_responce((t_cmd_rsp) {501, "ip and port not specified correctly"}));
-	if ((g_svr_env.cln_data = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-		ft_print_exit("failed to create socket");
+	return (ft_send_responce((t_cmd_rsp) {200, "Port okay"}));
+}
+
+void ft_connect_g_conn()
+{
+	struct sockaddr_in datacon;
+
 	datacon.sin_family = AF_INET;
-	datacon.sin_port = htons((uint16_t) conn.port);
-	if (inet_aton(conn.ip, &datacon.sin_addr))
+	datacon.sin_port = htons((uint16_t) g_svr_env.data_conn.port);
+	if (inet_aton(g_svr_env.data_conn.ip, &datacon.sin_addr))
 		puts("got network address");
-	printf("ip to connect to: %s\n",inet_ntoa(datacon.sin_addr));
+	printf("ip to connect to: %s\n", inet_ntoa(datacon.sin_addr));
+	if ((g_svr_env.cln_data = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+	{
+		ft_print_exit("failed to create socket");
+		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
+	}
 	if (connect(g_svr_env.cln_data, (const struct sockaddr *) &datacon, sizeof(datacon)) < 0)
 		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
-	ft_send_responce((t_cmd_rsp) {200, "connected"});
+
 }
