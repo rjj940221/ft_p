@@ -14,7 +14,7 @@ void ft_get(char **argv)
 
 	if ((fname = strrchr(argv[1], '/')) == NULL)
 		fname = argv[1];
-	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC | O_EVTONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
+	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 		return;
 	//send(g_clt_env.svr_cmd_sock, line, strlen(line), 0);
 	puts("wating for data");

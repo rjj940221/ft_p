@@ -2,7 +2,6 @@
 // Created by rojones on 2017/07/06.
 //
 
-
 #include "ft_p_client.h"
 
 int check_port(const char *str)
@@ -31,7 +30,7 @@ char *get_cmd_str(t_cmd cmd)
 
 	re = ft_strjoin(cmd.cmd, " ");
 	tmp = cmd.av;
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		re = ft_strjoin_free_l(re, *(tmp++));
 		re = ft_strjoin_free_l(re, " ");
@@ -77,6 +76,7 @@ t_cmd_rsp ft_get_cmd_responce()
 	char buf[2];
 	unsigned char read;
 	unsigned char r;
+	t_cmd_rsp		rsp;
 
 	read = 1;
 	r = 0;
@@ -93,5 +93,7 @@ t_cmd_rsp ft_get_cmd_responce()
 		read = ft_check_eol(buf, &r);
 		data = ft_strjoin_free_l(data, buf);
 	}
-	return (ft_parse_cmd_responce(data));
+	rsp = ft_parse_cmd_responce(data);
+	free(data);
+	return (rsp);
 }

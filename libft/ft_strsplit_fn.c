@@ -2,9 +2,7 @@
 // Created by Robert JONES on 2017/07/04.
 //
 
-#include <ntsid.h>
-#include <stdlib.h>
-#include <memory.h>
+
 #include "libft.h"
 #include <ctype.h>
 #include <printf.h>

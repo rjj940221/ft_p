@@ -12,9 +12,15 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# include <libc.h>
+//# include <libc.h>
+# include <stdint.h>
+# include <stdlib.h>
 # include <stdarg.h>
 # include <string.h>
+# include <zconf.h>
+//# include <ntsid.h>
+# include <stdlib.h>
+# include <memory.h>
 # define BUFF_SIZE 1
 # define L_LEN 50
 # define SPILL_MULT	2
@@ -84,6 +90,7 @@ size_t				ft_strlcat(char *const dst, const char *const src,
 								size_t len);
 char				*ft_strchr(const char *str, int c);
 char				*ft_strrchr(const char *str, int c);
+void 				ft_strreplace_char(char *str, char find, char replace);
 char				*ft_strstr(const char *big, const char *little);
 char				*ft_strnstr(const char *big, const char *little,
 								size_t len);
@@ -111,8 +118,8 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
-char				*ft_strjoin_free_l(char *s1, char const *s2);
 char				*ft_strjoin_free_r(char const *s1, char *s2);
+char				*ft_strjoin_free_l(char *s1, char const *s2);
 char				*ft_strjoin_free(char *s1, char *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);

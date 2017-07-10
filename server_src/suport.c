@@ -23,6 +23,8 @@ void ft_print_exit(char *str)
 		close(g_svr_env.svr_id);
 	if (g_svr_env.cln_cmd > -1)
 		close(g_svr_env.cln_cmd);
+	if (g_svr_env.svrroot)
+		free(g_svr_env.svrroot);
 	exit(1);
 }
 
@@ -49,6 +51,7 @@ char *get_responce_str(t_cmd_rsp res)
 	data = ft_itoa((int)res.code);
 	data = ft_strjoin_free_l(data, " ");
 	data = ft_strjoin_free_l(data, res.msg);
+	data = ft_strjoin_free_l(data, "\r\n");
 	return (data);
 }
 
@@ -86,7 +89,7 @@ unsigned char	ft_check_eol(char buf[2], unsigned char *r)
 {
 	if (buf[0] == '\r')
 		*r = 1;
-	else if (r && buf[0] == '\n')
+	else if (*r == 1 && buf[0] == '\n')
 		return (0);
 	else
 		*r = 0;

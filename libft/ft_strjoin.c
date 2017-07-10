@@ -14,7 +14,7 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		size;
+	size_t	size;
 	char	*re;
 	int		i;
 
@@ -32,59 +32,45 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strjoin_free_l(char *s1, char const *s2)
 {
-	int		size;
+	size_t	size;
 	char	*re;
-	int		i;
 
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	if (!(re = (char *)malloc((sizeof(char) * size))))
 		return (NULL);
-	i = 0;
-	while (s1 && *s1 && i < size)
-		re[i++] = *s1++;
-	while (s2 && *s2 && i < size)
-		re[i++] = *s2++;
-	re[i] = '\0';
-	//if(s1)
-	//	free(s1);
+	ft_bzero(re,size);
+	ft_strcpy(re, s1);
+	ft_strcat(re,s2);
+	if(s1)
+		free(s1);
 	return (re);
 }
 
 char	*ft_strjoin_free_r(char const *s1, char *s2)
 {
-	int		size;
+	size_t	size;
 	char	*re;
-	int		i;
 
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	if (!(re = (char *)malloc((sizeof(char) * size))))
 		return (NULL);
-	i = 0;
-	while (s1 && *s1 && i < size)
-		re[i++] = *s1++;
-	while (s2 && *s2 && i < size)
-		re[i++] = *s2++;
-	re[i] = '\0';
-	if (s2)
+	ft_strcpy(re, s1);
+	ft_strcat(re,s2);
+	if(s2)
 		free(s2);
 	return (re);
 }
 
 char	*ft_strjoin_free(char *s1, char *s2)
 {
-	int		size;
+	size_t	size;
 	char	*re;
-	int		i;
 
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	if (!(re = (char *)malloc((sizeof(char) * size))))
 		return (NULL);
-	i = 0;
-	while (s1 && *s1 && i < size)
-		re[i++] = *s1++;
-	while (s2 && *s2 && i < size)
-		re[i++] = *s2++;
-	re[i] = '\0';
+	ft_strcpy(re, s1);
+	ft_strcat(re,s2);
 	if (s1)
 		free(s1);
 	if(s2)

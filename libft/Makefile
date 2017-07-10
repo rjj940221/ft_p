@@ -15,10 +15,10 @@ CFLAGS = -Wall -Werror -Wextra -g3 -c
 OBJ = ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_free_str_arr.o\
 	ft_atoi_base.o ft_memmove.o ft_memchr.o ft_memcmp.o ft_strlen.o \
 	ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o ft_strncat.o \
-	ft_strlcat.o ft_strchr.o ft_strrchr.o ft_strstr.o ft_strnstr.o \
-	ft_atoi.o ft_ishex.o ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o \
-	ft_isprint.o ft_toupper.o ft_tolower.o ft_memalloc.o ft_memdel.o \
-	ft_strnew.o ft_strdel.o ft_strclr.o ft_striter.o ft_striteri.o \
+	ft_strlcat.o ft_strchr.o ft_strrchr.o ft_strreplace_char.o ft_strstr.o\
+	ft_strnstr.o ft_atoi.o ft_ishex.o ft_isalpha.o ft_isdigit.o ft_isalnum.o\
+	ft_isascii.o ft_isprint.o ft_toupper.o ft_tolower.o ft_memalloc.o\
+	ft_memdel.o	ft_strnew.o ft_strdel.o ft_strclr.o ft_striter.o ft_striteri.o \
 	ft_power.o ft_strmap.o ft_strmapi.o ft_strequ.o ft_strnequ.o ft_strsub.o \
 	ft_strjoin.o ft_strtrim.o ft_strsplit.o ft_strsplit_fn.o ft_itoa.o ft_putchar.o \
 	ft_putstr.o ft_putendl.o  ft_putnbr.o ft_putchar_fd.o ft_putstr_fd.o \
@@ -91,6 +91,9 @@ ft_strchr.o : ft_strchr.c
 
 ft_strrchr.o : ft_strrchr.c
 	$(C) $(CFLAGS) ft_strrchr.c
+
+ft_strreplace_char.o : ft_strreplace_char.c
+    $(C) $(CFLAGS) ft_strreplace_char.c
 
 ft_strstr.o : ft_strstr.c
 	$(C) $(CFLAGS) ft_strstr.c
