@@ -1,7 +1,7 @@
 #ifndef FT_P_SERVER_H
 # define FT_P_SERVER_H
 
-# include "ft_p.h"
+# include "../ft_p.h"
 # include <unistd.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -37,6 +37,7 @@ typedef struct		s_svr_env
 
 extern t_svr_env	g_svr_env;
 
+int check_port(const char *str);
 void	ft_send_responce(t_cmd_rsp res);
 t_cmd_rsp ft_get_responce();
 void ft_send_cmd(t_cmd cmd);

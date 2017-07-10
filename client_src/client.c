@@ -3,7 +3,7 @@
 //
 
 
-#include "../ft_p_client.h"
+#include "ft_p_client.h"
 
 t_clt_env g_clt_env = (t_clt_env) {FALSE, -1};
 
@@ -33,10 +33,13 @@ void search_builin(char *line)
 
 	tav = ft_strsplit_fn(line, isspace);
 	tmp = g_builtin_cmd;
-	while(tmp)
+	while(tmp->cmd)
 	{
 		if (strcmp(tav[0], tmp->cmd) == 0)
+		{
 			(*tmp->fun)(tav);
+			return ;
+		}
 		tmp++;
 	}
 	printf("\x1b[mError: Command not recognised'%s'\n\x1b[0m",tav[0]);

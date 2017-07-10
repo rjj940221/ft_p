@@ -2,7 +2,7 @@
 // Created by Robert JONES on 2017/07/07.
 //
 
-#include "../ft_p_client.h"
+#include "ft_p_client.h"
 
 void ft_get(char **argv)
 {

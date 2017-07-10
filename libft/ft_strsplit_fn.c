@@ -21,7 +21,7 @@ int countwords(char *str, int(*fn)(int))
 	check = 1;
 	if (!str)
 		return (num);
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		test =(*fn)(*tmp);
 		if (test == 0 && check == 1)

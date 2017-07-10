@@ -3,7 +3,7 @@
 //
 
 
-#include "../ft_p_server.h"
+#include "ft_p_server.h"
 
 int check_port(const char *str)
 {
@@ -104,7 +104,7 @@ t_cmd_rsp ft_parse_cmd_responce(char *data)
 	return (rsp);
 }
 
-t_cmd_rsp ft_get_cmd_responce()
+t_cmd_rsp ft_get_responce()
 {
 	char 			*data;
 	t_cmd_rsp		tmp;

@@ -2,7 +2,7 @@
 // Created by rojones on 2017/07/06.
 //
 
-# include "../ft_p_client.h"
+# include "ft_p_client.h"
 
 void ft_put(char **argv)
 {

@@ -3,7 +3,7 @@
 //
 
 
-#include "../ft_p_client.h"
+#include "ft_p_client.h"
 
 int check_port(const char *str)
 {

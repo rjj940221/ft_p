@@ -45,8 +45,8 @@ char	*ft_strjoin_free_l(char *s1, char const *s2)
 	while (s2 && *s2 && i < size)
 		re[i++] = *s2++;
 	re[i] = '\0';
-	if(s1)
-		free(s1);
+	//if(s1)
+	//	free(s1);
 	return (re);
 }
 

@@ -5,11 +5,11 @@
 //#include <bits/socket_type.h>
 //#include <bits/socket.h>
 
-#include "../ft_p_server.h"
+#include "ft_p_server.h"
 
-t_svr_env g_svr_env;
+t_svr_env g_svr_env = (t_svr_env){-1, -1, NULL};
 
-int check_port(const char *str)
+/*int check_port(const char *str)
 {
 	while (*str) {
 		if (isdigit(*str) == 0)
@@ -17,7 +17,7 @@ int check_port(const char *str)
 		str++;
 	}
 	return 1;
-}
+}*/
 
 char *get_client_data(int clntSocket)
 {
@@ -107,7 +107,6 @@ void ft_ls()
 	num_files = 0;
 	if (!(dir = opendir(".")))
 		printf("\x1b[31mERROR: cannot open dir\n\x1b[0m");
-	printf("dir len: %d\n", dir->__dd_len);
 	while (readdir(dir) != NULL)
 		num_files++;
 	lseek(dir->__dd_fd, 0, SEEK_SET);
@@ -153,26 +152,7 @@ void ft_get(int client, char **argv)
 	send(client, data, (size_t) stat.st_size, 0);
 }
 
-void ft_put(int client, char **argv)
-{
-	char *fname;
-	int fd;
-	char buff[RCVBUFSIZE]; /* Buffer for echo string */
-	ssize_t recv_size; /* Size of received message */
 
-	if ((fname = strrchr(argv[1], '/')) == NULL)
-		fname = argv[1];
-	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC | O_EVTONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
-		return;
-	recv_size = RCVBUFSIZE;
-	while (recv_size == RCVBUFSIZE) {
-		if ((recv_size = recv(client, buff, RCVBUFSIZE, 0)) < 0)
-			printf("recv() failed");
-		else {
-			write(fd, buff, (size_t) recv_size);
-		}
-	}
-}
 
 void ft_cd(char **argv)
 {
@@ -183,49 +163,35 @@ void ft_cd(char **argv)
 	}
 }
 
-int get_command(char *line, int client)
+void search_builin(t_cmd cmd)
 {
-	int re;
-	size_t i;
-	char *tmp;
-	char **tav;
+	t_builtin_cmd *tmp;
 
-	re = 1;
-	tmp = ft_strtrim(line);
-	tav = ft_strsplit_fn(line, isspace);
-	//todo: loop to choose funct.
-	if (strcmp(tav[0], "quite") == 0)
-		re = 0;
-	if (strcmp(tav[0], "pwd") == 0)
-		ft_pwd();
-	if (strcmp(tav[0], "cd") == 0)
-		ft_cd(tav);
-	if (strcmp(tav[0], "ls") == 0)
-		ft_ls();
-	if (strcmp(tav[0], "put") == 0)
-		ft_put(client, tav);
-	if (strcmp(tav[0], "get") == 0)
-		ft_get(client, tav);
-	if (line)
-		free(line);
-	if (tmp)
-		free(tmp);
-	return re;
+	tmp = g_builtin_cmd;
+	while(tmp)
+	{
+		if (strcmp(cmd.cmd, tmp->cmd) == 0)
+			(*tmp->fnc)(cmd);
+		tmp++;
+	}
+	printf("\x1b[mError: Command not recognised'%s'\n\x1b[0m",cmd.cmd);
+	ft_send_responce((t_cmd_rsp){502, "Command not recognised"});
 }
 
-void chiled(int sockid, int client)
+void chiled()
 {
-	int exit_loop;
+	t_cmd cmd;
 
-	exit_loop = 1;
-	close(sockid);
-	while (exit_loop)
-		exit_loop = get_command(get_client_data(client), client);
-	close(client);
-	exit(0);
+	close(g_svr_env.svr_id);
+	while (1)
+	{
+		cmd = ft_get_cmd();
+		search_builin(cmd);
+	}
+
 }
 
-void perant(int client, pid_t pid)
+void perant(pid_t pid)
 {
 	pid_t perant;
 	int stat;
@@ -235,20 +201,18 @@ void perant(int client, pid_t pid)
 		printf("wait failed\n");
 		exit(1);
 	}
-	close(client);
+	close(g_svr_env.cln_cmd);
 }
 
-void server_loop(int sockid)
+void server_loop()
 {
 	pid_t pid;
-
 	t_tcp_sock_in client_sock;
-	int client;
 	int clientsize;
 
 	clientsize = sizeof(client_sock);
 	while (1) {
-		if ((client = accept(sockid, (struct sockaddr *) &client_sock, (socklen_t *) &clientsize)) < 0) {
+		if ((g_svr_env.cln_cmd = accept(g_svr_env.svr_id, (struct sockaddr *) &client_sock, (socklen_t *) &clientsize)) < 0) {
 			printf("accept failed\n");
 			//exit(1);
 		} else {
@@ -256,9 +220,9 @@ void server_loop(int sockid)
 			pid = fork();
 			if (pid > -1) {
 				if (pid == 0)
-					chiled(sockid, client);
+					chiled();
 				else {
-					perant(client, pid);
+					perant(pid);
 				}
 			}
 		}
@@ -279,23 +243,39 @@ void	ft_svr_init_connection(int port)
 		ft_print_exit("socket failed to create listener\n");
 }
 
+void	ft_svr_init_env(char **av)
+{
+	if (open(av[2], O_DIRECTORY) == -1)
+		ft_print_exit("Failed to set server root dicectory");
+	g_svr_env.svrroot = av[2];
+	if (check_port(av[3]) == -1)
+	{
+		printf("please use %s [-root /serverroot] port_num "
+					   "\n\te.g %s -root ~/Descktop 8080\n", av[0], av[0]);
+		exit(1);
+	}
+}
+
 int main(int ac, char **av)
 {
 	int	port;
 
-	if (ac < 2 ) {
-		printf("please use %s port_num \n\te.g %s 8080\n", av[0], av[0]);
+	if (ac == 2 && check_port(av[1]) == 1)
+		port = atoi(av[1]);
+	else if (ac == 4 && strcmp(av[1], "-root"))
+	{
+		ft_svr_init_env(av);
+		port = atoi(av[3]);
+	}
+	else
+	{
+		printf("please use %s [-root /serverroot] port_num "
+					   "\n\te.g %s -root ~/Descktop 8080\n", av[0], av[0]);
 		return (0);
 	}
-	if (ac == 2)
-		port = atoi(av[1]);
-	else if ()
-
-		check_port(av[1]) == -1
-	g_svr_env.svrroot = get_pwd();
-
-	server_loop(sockid);
-	close(sockid);
-
+	if (g_svr_env.svrroot == NULL)
+		g_svr_env.svrroot = get_pwd();
+	ft_svr_init_connection(port);
+	server_loop();
 }
 
