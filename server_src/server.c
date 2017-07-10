@@ -38,15 +38,7 @@ char *get_client_data(int clntSocket)
 
 
 
-void ft_pwd()
-{
-	char *pwd;
 
-	pwd = ft_get_pwd();
-	printf("PWD: %s\n", pwd);
-	if (pwd)
-		free(pwd);
-}
 
 /*void ft_get(int client, char **argv)
 {

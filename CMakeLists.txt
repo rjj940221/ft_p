@@ -12,5 +12,5 @@ add_library(libft STATIC ${LIBFT_SRC})
 
 add_executable(client ${CLT_SRC})
 target_link_libraries(client libft)
-add_executable(server ${SVR_SRC})
+add_executable(server ${SVR_SRC} server_src/ft_pwd.c)
 target_link_libraries(server libft)
