@@ -6,9 +6,11 @@
 
 void ft_ls(char **argv)
 {
-	t_cmd cmd;
-	t_cmd_rsp rsp;
-	char *data;
+	t_cmd		cmd;
+	char 		*tmp;
+	size_t		data_len;
+	t_cmd_rsp	rsp;
+	char		*data;
 
 	ft_port(8800);
 	cmd.cmd = "LIST";
@@ -20,7 +22,11 @@ void ft_ls(char **argv)
 	{
 		if (rsp.code == 150)
 			ft_data_connection();
-		data = ft_receve_data();
+		data_len = ft_receve_data(&data);
+		tmp = data;
+		data = malloc(data_len + 1);
+		data = memcpy(data, tmp, data_len);
+		data[data_len] = '\0';
 		rsp = ft_get_cmd_responce();
 		ft_process_rsp(rsp);
 		if (rsp.code >= 200 && rsp.code < 300)

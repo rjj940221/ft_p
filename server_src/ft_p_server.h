@@ -54,7 +54,7 @@ void		ft_print_exit(char *str);
 int			check_port(const char *str);
 char 		*ft_get_pwd();
 char 		*ft_abspath(char *str);
-char		*ft_check_root(char *str);
+char		*ft_check_root(char *str, int flags);
 void		ft_connect_g_conn();
 void		ft_cd(t_cmd cmd);
 void		ft_quit(t_cmd cmd);
@@ -62,14 +62,16 @@ void		ft_put(t_cmd cmd);
 void		ft_port(t_cmd cmd);
 void		ft_ls(t_cmd cmd);
 void		ft_pwd(t_cmd cmd);
+void		ft_get(t_cmd cmd);
 
 t_cmd	ft_get_cmd();
 
 static t_builtin_cmd g_builtin_cmd[] = {
-		{"QUIT", ft_quit},
 		{"CWD", ft_cd},
 		{"PORT", ft_port},
 		{"PWD", ft_pwd},
+		{"QUIT", ft_quit},
+		{"RETR", ft_get},
 		{"LIST", ft_ls},
 		NULL
 };

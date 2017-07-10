@@ -54,7 +54,7 @@ t_cmd_rsp	ft_get_cmd_responce();
 void 		ft_process_rsp(t_cmd_rsp	rsp);
 char		*ft_get_addr_str(int sock_id);
 void 		ft_send_cmd(t_cmd cmd);
-char		*ft_receve_data();
+size_t		ft_receve_data(char **data);
 void 		ft_data_connection();
 
 

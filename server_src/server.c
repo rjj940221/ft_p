@@ -40,26 +40,7 @@ char *get_client_data(int clntSocket)
 
 
 
-/*void ft_get(int client, char **argv)
-{
-	int fd;
-	struct stat stat;
-	char *data;
-
-	if (ft_checkroot(&argv[1]) == -1)
-		return;
-	printf("file [%s] in svrroot\n", argv[1]);
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
-		return;
-	puts("get opent file");
-	if (fstat(fd, &stat) == -1)
-		return;
-	puts("get got file stat");
-	if ((data = mmap(0, (size_t) stat.st_size, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0)) == MAP_FAILED)
-		return;
-	puts("pet got data");
-	send(client, data, (size_t) stat.st_size, 0);
-}*/
+/**/
 
 /*void ft_put(int client, char **argv)
 {

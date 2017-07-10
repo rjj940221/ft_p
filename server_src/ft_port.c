@@ -40,8 +40,6 @@ t_conn ft_get_conn(char *data)
 
 void ft_port(t_cmd cmd)
 {
-
-
 	if (!cmd.av || !cmd.av[0])
 		return (ft_send_responce((t_cmd_rsp) {501, "ip and port not specified"}));
 	g_svr_env.data_conn = ft_get_conn(cmd.av[0]);

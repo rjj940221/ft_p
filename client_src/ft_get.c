@@ -6,27 +6,36 @@
 
 void ft_get(char **argv)
 {
-	t_cmd cmd;
-	char *fname;
-	int fd;
-	char buff[RCVBUFSIZE]; /* Buffer for echo string */
-	ssize_t recv_size; /* Size of received message */
+	t_cmd		cmd;
+	t_cmd_rsp	rsp;
+	char		*data;
+	char		*fname;
+	int			fd;
+	size_t 		data_len;
 
+	cmd.cmd = "RETR";
+	cmd.av = &argv[1];
+	data = NULL;//not necesary;
 	if ((fname = strrchr(argv[1], '/')) == NULL)
 		fname = argv[1];
 	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 		return;
-	//send(g_clt_env.svr_cmd_sock, line, strlen(line), 0);
-	puts("wating for data");
-	recv_size = RCVBUFSIZE;
-	while (recv_size == RCVBUFSIZE)
+	ft_send_cmd(cmd);
+	rsp = ft_get_cmd_responce();
+	ft_process_rsp(rsp);
+	if (rsp.code == 150 || rsp.code == 125)
 	{
-		if ((recv_size = recv(g_clt_env.svr_cmd_sock, buff, RCVBUFSIZE, 0)) < 0)
-			printf("recv() failed");
-		else
+		if (rsp.code == 150)
+			ft_data_connection();
+		data_len = ft_receve_data(&data);
+		rsp = ft_get_cmd_responce();
+		ft_process_rsp(rsp);
+		if (rsp.code >= 200 && rsp.code < 300)
+			write(fd, data, data_len);
+		if (rsp.code == 226)
 		{
-			printf("receved %zu\n", recv_size);
-			write(fd, buff, (size_t) recv_size);
+			close(g_clt_env.data_sock);
+			g_clt_env.data_sock = -1;
 		}
 	}
 }

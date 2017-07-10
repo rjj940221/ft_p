@@ -12,7 +12,7 @@ void ft_cd(t_cmd cmd)
 		ft_send_responce((t_cmd_rsp){501, "No path specified"});
 	else
 	{
-		path = ft_check_root(cmd.av[0]);
+		path = ft_check_root(cmd.av[0], O_DIRECTORY);
 		puts(path);
 		if (path != NULL)
 		{

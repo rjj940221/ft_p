@@ -6,7 +6,7 @@
 
 #include "ft_p_server.h"
 
-char	*ft_check_root(char *str)
+char	*ft_check_root(char *str, int flags)
 {
 	char *pwd;
 	char *path;
@@ -23,7 +23,7 @@ char	*ft_check_root(char *str)
 	free(pwd);
 	path = ft_abspath(str);
 	printf("svr abs path [%s]\n", path);
-	if  ((fd = open(path, O_DIRECTORY)) != -1)
+	if  ((fd = open(path, flags)) != -1)
 	{
 		close(fd);
 		puts("returning abs path from check");

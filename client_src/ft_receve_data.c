@@ -4,20 +4,27 @@
 
 #include "ft_p_client.h"
 
-char *ft_receve_data()
+size_t ft_receve_data(char **data)
 {
-	char	*data;
-	char	buf[RCVBUFSIZE + 1];
+	char 	*tmp;
+	char	buf[RCVBUFSIZE];
 	ssize_t rcv;
+	size_t	rcv_total;
 
-	data = NULL;
+	*data = NULL;
+	rcv_total = 0;
 	if (g_clt_env.data_sock == -1)
 		ft_print_exit("data socket not initilized");
 	printf("data_sock get data: %d\n", g_clt_env.data_sock);
 	while ((rcv = recv(g_clt_env.data_sock, buf, RCVBUFSIZE, 0)) > 0)
 	{
-		buf[rcv] = '\0';
-		data = ft_strjoin_free_l(data, buf);
+		tmp = *data;
+		rcv_total += rcv;
+		*data = malloc(rcv_total);
+		*data = memcpy(*data, tmp, rcv_total - rcv);
+		if (tmp)
+			free(tmp);
+		memcpy(*data + (rcv_total - rcv), buf, (size_t) rcv);
 	}
-	return data;
+	return rcv_total;
 }
