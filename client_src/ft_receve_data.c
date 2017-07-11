@@ -15,7 +15,6 @@ size_t ft_receve_data(char **data)
 	rcv_total = 0;
 	if (g_clt_env.data_sock == -1)
 		ft_print_exit("data socket not initilized");
-	printf("data_sock get data: %d\n", g_clt_env.data_sock);
 	while ((rcv = recv(g_clt_env.data_sock, buf, RCVBUFSIZE, 0)) > 0)
 	{
 		tmp = *data;

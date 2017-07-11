@@ -73,6 +73,7 @@ static t_builtin_cmd g_builtin_cmd[] = {
 		{"QUIT", ft_quit},
 		{"RETR", ft_get},
 		{"LIST", ft_ls},
+		{"STOR", ft_put},
 		NULL
 };
 #endif

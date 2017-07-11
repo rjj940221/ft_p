@@ -15,9 +15,10 @@ void ft_get(char **argv)
 
 	cmd.cmd = "RETR";
 	cmd.av = &argv[1];
-	data = NULL;//not necesary;
 	if ((fname = strrchr(argv[1], '/')) == NULL)
 		fname = argv[1];
+	while (fname && *fname == '/')
+		fname++;
 	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 		return;
 	ft_send_cmd(cmd);
@@ -32,10 +33,14 @@ void ft_get(char **argv)
 		ft_process_rsp(rsp);
 		if (rsp.code >= 200 && rsp.code < 300)
 			write(fd, data, data_len);
+		else
+			unlink(fname);
 		if (rsp.code == 226)
 		{
 			close(g_clt_env.data_sock);
 			g_clt_env.data_sock = -1;
 		}
 	}
+	else
+		unlink(fname);
 }

@@ -3,16 +3,16 @@
 //
 
 #include <stdio.h>
-#include <string.h>
+//#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/ioctl.h>
+//#include <sys/ioctl.h>
 #include <netinet/in.h>
-#include <net/if.h>
-#include <unistd.h>
+//#include <net/if.h>
+//#include <unistd.h>
 #include <arpa/inet.h>
-#include <ifaddrs.h>
-#include <wait.h>
+//#include <ifaddrs.h>
+//#include <wait.h>
 #include "ft_p_client.h"
 
 int ft_ip4(int port)

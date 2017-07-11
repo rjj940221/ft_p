@@ -52,6 +52,8 @@ void ft_connect_g_conn()
 {
 	struct sockaddr_in datacon;
 
+	if (g_svr_env.data_conn.port == -1 )
+		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
 	datacon.sin_family = AF_INET;
 	datacon.sin_port = htons((uint16_t) g_svr_env.data_conn.port);
 	if (inet_aton(g_svr_env.data_conn.ip, &datacon.sin_addr))

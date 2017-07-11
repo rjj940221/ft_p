@@ -6,21 +6,26 @@
 
 void ft_put(t_cmd cmd)
 {
-	/*char *fname;
+	char *fname;
 	int fd;
-	char buff[RCVBUFSIZE]; *//* Buffer for echo string *//*
-	ssize_t recv_size; *//* Size of received message *//*
+	char buff[RCVBUFSIZE];
+	ssize_t recv_size;
 
-	if ((fname = strrchr(argv[1], '/')) == NULL)
-		fname = argv[1];
+	if (!cmd.av|| cmd.av[0] == NULL)
+		return (ft_send_responce((t_cmd_rsp){501, "File name not specified"}));
+	if ((fname = strrchr(cmd.av[0], '/')) == NULL)
+		fname = cmd.av[0];
 	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC | O_EVTONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
-		return;
-	recv_size = RCVBUFSIZE;
-	while (recv_size == RCVBUFSIZE) {
-		if ((recv_size = recv(client, buff, RCVBUFSIZE, 0)) < 0)
-			printf("recv() failed");
-		else {
+		return ft_send_responce((t_cmd_rsp){450, "Unable to open file"});
+	if (g_svr_env.cln_data == -1)
+	{
+		ft_send_responce((t_cmd_rsp){150, "Opening data connection to receive on"});
+		ft_connect_g_conn();
+	}
+	while ((recv_size = recv(g_svr_env.cln_data, buff, RCVBUFSIZE, 0)) > 0) {
 			write(fd, buff, (size_t) recv_size);
-		}
-	}*/
+	}
+	ft_send_responce((t_cmd_rsp){226, "Received file"});
+	close(g_svr_env.cln_data);
+	g_svr_env.cln_data = -1;
 }

@@ -8,17 +8,10 @@ void ft_ls(t_cmd cmd)
 {
 	DIR *dir;
 	struct dirent *dre;
-	size_t num_files;
 	char	*data;
 
-	num_files = 0;
 	cmd.cmd = NULL;
 	data = NULL;
-/*	if (g_svr_env.cln_data == -1)
-	{
-		ft_send_responce((t_cmd_rsp) {426, "data connection not open"});
-		return;
-	}*/
 	if (!(dir = opendir(".")))
 	{
 		ft_send_responce((t_cmd_rsp) {451, "could not open directory"});
@@ -39,7 +32,7 @@ void ft_ls(t_cmd cmd)
 		ft_send_responce((t_cmd_rsp) {150, "sending data"});
 		ft_connect_g_conn();
 	}
-	if (send(g_svr_env.cln_data,data, ft_strlen(data), 0) != -1)
+	if (g_svr_env.cln_data != -1 && send(g_svr_env.cln_data,data, ft_strlen(data), 0) != -1)
 	{
 		ft_send_responce((t_cmd_rsp) {226, "data sent"});
 		close(g_svr_env.cln_data);

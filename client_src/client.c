@@ -14,7 +14,6 @@ void connect_to_server(char **av)
 	struct hostent *hp;
 
 	server.sin_family = AF_INET;
-	printf("Host: %s\n", av[1]);
 	hp = gethostbyname(av[1]);
 	if (hp == 0)
 	{
@@ -22,12 +21,10 @@ void connect_to_server(char **av)
 		exit(1);
 	}
 	memcpy(&server.sin_addr, hp->h_addr_list[0], hp->h_length);
-	printf("ip to connect to: %s\n", inet_ntoa(server.sin_addr));
 	server.sin_port = htons((uint16_t) atoi(av[2]));
-	printf("sizeof struct: %zu\n", sizeof(server));
 	if (connect(g_clt_env.svr_cmd_sock, (const struct sockaddr *) &server, sizeof(server)) < 0)
 		ft_print_exit("failed to create command connection");
-	puts(ft_get_addr_str(g_clt_env.svr_cmd_sock));
+	ft_port(8800);
 }
 
 void search_builin(char *line)

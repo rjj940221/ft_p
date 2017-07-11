@@ -7,6 +7,7 @@
 
 # include <netinet/in.h>
 # include <printf.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <netdb.h>
 # include <memory.h>

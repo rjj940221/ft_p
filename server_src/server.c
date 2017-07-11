@@ -4,14 +4,9 @@
 
 
 #include "ft_p_server.h"
-#include <sys/param.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <wait.h>
 //#include <wait.h>
-#include "ft_p_server.h"
 
-t_svr_env g_svr_env = (t_svr_env) {-1, -1, -1, NULL};
+t_svr_env g_svr_env = (t_svr_env) {-1, -1, -1, NULL, {0,0,0, 0,"qwerfrea"}, {NULL, -1}};
 
 char *get_client_data(int clntSocket)
 {
