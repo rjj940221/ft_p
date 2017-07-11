@@ -1,19 +1,26 @@
-//
-// Created by rojones on 2017/07/03.
-//
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 10:39:03 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 10:51:54 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_server.h"
-//#include <wait.h>
 
-t_svr_env g_svr_env = (t_svr_env) {-1, -1, -1, NULL, {0,0,0, 0,"qwerfrea"}, {NULL, -1}};
+t_svr_env g_svr_env = (t_svr_env){-1, -1, -1, NULL,
+	{0,0,0, 0,"qwerfrea"}, {NULL, -1}};
 
-char *get_client_data(int clntSocket)
+char	*get_client_data(int clntSocket)
 {
-	char buff[RCVBUFSIZE + 1]; /* Buffer for echo string */
+	char buff[RCVBUFSIZE + 1];
 	char *line;
 	char *tmp;
-	int recv_size; /* Size of received message */
+	int recv_size;
 
 	line = NULL;
 	recv_size = RCVBUFSIZE;
@@ -31,35 +38,7 @@ char *get_client_data(int clntSocket)
 	return line;
 }
 
-
-
-
-
-/**/
-
-/*void ft_put(int client, char **argv)
-{
-	char *fname;
-	int fd;
-	char buff[RCVBUFSIZE]; *//* Buffer for echo string *//*
-	ssize_t recv_size; *//* Size of received message *//*
-
-	if ((fname = strrchr(argv[1], '/')) == NULL)
-		fname = argv[1];
-	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
-		return;
-	recv_size = RCVBUFSIZE;
-	while (recv_size == RCVBUFSIZE) {
-		if ((recv_size = recv(client, buff, RCVBUFSIZE, 0)) < 0)
-			printf("recv() failed");
-		else {
-			write(fd, buff, (size_t) recv_size);
-		}
-	}
-}*/
-
-
-t_bool ft_check_dir(char *dir)
+t_bool	ft_check_dir(char *dir)
 {
 	int fd;
 
@@ -72,7 +51,7 @@ t_bool ft_check_dir(char *dir)
 	return (FALSE);
 }
 
-void search_builin(t_cmd cmd)
+/*void	search_builin(t_cmd cmd)
 {
 	t_builtin_cmd *tmp;
 
@@ -89,7 +68,7 @@ void search_builin(t_cmd cmd)
 	printf("\x1b[mError: Command not recognised '%s'\n\x1b[0m", cmd.cmd);
 }
 
-void chiled()
+void	chiled()
 {
 	t_cmd cmd;
 
@@ -101,7 +80,7 @@ void chiled()
 	}
 }
 
-void perant(pid_t pid)
+void	perant(pid_t pid)
 {
 	pid_t perant;
 	int stat;
@@ -136,9 +115,9 @@ void server_loop()
 //			}
 		}
 	}
-}
+}*/
 
-void ft_svr_init_connection(int port)
+void	ft_svr_init_connection(int port)
 {
 	g_svr_env.svr_id = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (g_svr_env.svr_id == -1)

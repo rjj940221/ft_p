@@ -41,12 +41,13 @@ typedef struct		s_svr_env
 
 extern t_svr_env	g_svr_env;
 
-int check_port(const char *str);
-void	ft_send_responce(t_cmd_rsp res);
-t_cmd_rsp ft_get_responce();
-void ft_send_cmd(t_cmd cmd);
-void ft_print_exit(char *str);
-
+int			check_port(const char *str);
+t_bool		ft_check_eol(char buf[2], unsigned char *r);
+void		ft_send_responce(t_cmd_rsp res);
+t_cmd_rsp	ft_get_responce();
+void 		ft_send_cmd(t_cmd cmd);
+void 		ft_print_exit(char *str);
+void 		server_loop();
 t_cmd_rsp	ft_get_responce();
 void		ft_send_cmd(t_cmd cmd);
 void		ft_send_responce(t_cmd_rsp res);
@@ -63,8 +64,9 @@ void		ft_port(t_cmd cmd);
 void		ft_ls(t_cmd cmd);
 void		ft_pwd(t_cmd cmd);
 void		ft_get(t_cmd cmd);
+void 		ft_send_cmd(t_cmd cmd);
+t_cmd		ft_get_cmd();
 
-t_cmd	ft_get_cmd();
 
 static t_builtin_cmd g_builtin_cmd[] = {
 		{"CWD", ft_cd},

@@ -1,11 +1,19 @@
-//
-// Created by rojones on 2017/07/08.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_port.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 10:36:46 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 10:37:50 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <netdb.h>
 #include "ft_p_server.h"
 
-int ft_2darrlen(void **arr)
+int		ft_2darrlen(void **arr)
 {
 	int re;
 	char **tmp;
@@ -17,7 +25,7 @@ int ft_2darrlen(void **arr)
 	return re;
 }
 
-t_conn ft_get_conn(char *data)
+t_conn	ft_get_conn(char *data)
 {
 	t_conn conn;
 	char **tmp;
@@ -38,17 +46,19 @@ t_conn ft_get_conn(char *data)
 	return (conn);
 }
 
-void ft_port(t_cmd cmd)
+void	ft_port(t_cmd cmd)
 {
 	if (!cmd.av || !cmd.av[0])
-		return (ft_send_responce((t_cmd_rsp) {501, "ip and port not specified"}));
+		return (ft_send_responce((t_cmd_rsp)
+					{501, "ip and port not specified"}));
 	g_svr_env.data_conn = ft_get_conn(cmd.av[0]);
 	if (g_svr_env.data_conn.ip == NULL)
-		return (ft_send_responce((t_cmd_rsp) {501, "ip and port not specified correctly"}));
+		return (ft_send_responce((t_cmd_rsp)
+					{501, "ip and port not specified correctly"}));
 	return (ft_send_responce((t_cmd_rsp) {200, "Port okay"}));
 }
 
-void ft_connect_g_conn()
+void	ft_connect_g_conn()
 {
 	struct sockaddr_in datacon;
 
@@ -64,7 +74,8 @@ void ft_connect_g_conn()
 		ft_print_exit("failed to create socket");
 		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
 	}
-	if (connect(g_svr_env.cln_data, (const struct sockaddr *) &datacon, sizeof(datacon)) < 0)
+	if (connect(g_svr_env.cln_data,
+				(const struct sockaddr *) &datacon, sizeof(datacon)) < 0)
 		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
 
 }

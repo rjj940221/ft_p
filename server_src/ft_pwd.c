@@ -1,12 +1,20 @@
-//
-// Created by rojones on 2017/07/10.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 10:37:59 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 10:38:22 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_server.h"
 
-void ft_pwd(t_cmd cmd)
+void	ft_pwd(t_cmd cmd)
 {
-	char *pwd;
+	char	 *pwd;
 
 	pwd = ft_get_pwd();
 	if (pwd)
@@ -17,6 +25,7 @@ void ft_pwd(t_cmd cmd)
 	}
 	else
 	{
-		ft_send_responce((t_cmd_rsp){500, "Failed to get the current working directory"});
+		ft_send_responce((t_cmd_rsp)
+				{500, "Failed to get the current working directory"});
 	}
 }

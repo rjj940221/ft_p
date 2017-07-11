@@ -1,13 +1,21 @@
-//
-// Created by rojones on 2017/07/08.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_abs_path.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 10:10:46 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 10:10:59 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_server.h"
 
-char *ft_abspath(char *str)
+char	*ft_abspath(char *str)
 {
-	char *pwd;
-	char *re;
+	char	*pwd;
+	char	*re;
 
 	re = NULL;
 	if (str)
