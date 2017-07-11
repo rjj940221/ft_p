@@ -1,27 +1,23 @@
-//
-// Created by Robert JONES on 2017/07/07.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_get.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 12:47:38 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 16:38:36 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_client.h"
 
-void ft_get(char **argv)
+void	ft_get_data_responce(int fd, char *fname)
 {
-	t_cmd		cmd;
 	t_cmd_rsp	rsp;
 	char		*data;
-	char		*fname;
-	int			fd;
-	size_t 		data_len;
+	size_t		data_len;
 
-	cmd.cmd = "RETR";
-	cmd.av = &argv[1];
-	if ((fname = strrchr(argv[1], '/')) == NULL)
-		fname = argv[1];
-	while (fname && *fname == '/')
-		fname++;
-	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
-		return;
-	ft_send_cmd(cmd);
 	rsp = ft_get_cmd_responce();
 	ft_process_rsp(rsp);
 	if (rsp.code == 150 || rsp.code == 125)
@@ -43,4 +39,23 @@ void ft_get(char **argv)
 	}
 	else
 		unlink(fname);
+}
+
+void	ft_get(char **argv)
+{
+	t_cmd		cmd;
+	char		*fname;
+	int			fd;
+
+	cmd.cmd = "RETR";
+	cmd.av = &argv[1];
+	if ((fname = strrchr(argv[1], '/')) == NULL)
+		fname = argv[1];
+	while (fname && *fname == '/')
+		fname++;
+	if ((fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC,
+					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
+		return ;
+	ft_send_cmd(cmd);
+	ft_get_data_responce(fd, fname);
 }

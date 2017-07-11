@@ -57,6 +57,7 @@ char		*ft_get_addr_str(int sock_id);
 void 		ft_send_cmd(t_cmd cmd);
 size_t		ft_receve_data(char **data);
 void 		ft_data_connection();
+unsigned char	ft_check_eol(char buf[2], unsigned char *r);
 
 
 static t_builtin_cmd g_builtin_cmd[] = {

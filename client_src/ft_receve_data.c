@@ -1,12 +1,20 @@
-//
-// Created by Robert JONES on 2017/07/10.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_receve_data.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/11 16:19:25 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/11 16:48:39 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_client.h"
 
-size_t ft_receve_data(char **data)
+size_t	ft_receve_data(char **data)
 {
-	char 	*tmp;
+	char	*tmp;
 	char	buf[RCVBUFSIZE];
 	ssize_t rcv;
 	size_t	rcv_total;
@@ -23,7 +31,7 @@ size_t ft_receve_data(char **data)
 		*data = memcpy(*data, tmp, rcv_total - rcv);
 		if (tmp)
 			free(tmp);
-		memcpy(*data + (rcv_total - rcv), buf, (size_t) rcv);
+		memcpy(*data + (rcv_total - rcv), buf, (size_t)rcv);
 	}
-	return rcv_total;
+	return (rcv_total);
 }

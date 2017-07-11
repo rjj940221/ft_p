@@ -118,7 +118,7 @@ set(CLN_SRC
         client_src/ft_quit.c
         client_src/ft_receve_data.c
         client_src/suport.c
-        ft_p.h)
+        ft_p.h client_src/ft_cmd.c client_src/ft_recponce.c)
 
 include_directories(libft)
 
