@@ -54,6 +54,8 @@ $(CLN_NAME) : $(CLN_OBJ)
 clean:
 	@\rm -rf build_svr
 	@\rm -rf build_cln
+	@\rm -rf $(SVR_NAME).dSYM
+	@\rm -rf $(CLN_NAME).dSYM
 	@make -C libft clean
 
 fclean: clean
