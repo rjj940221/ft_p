@@ -66,8 +66,8 @@ void	ft_connect_g_conn(void)
 		return (ft_send_responce((t_cmd_rsp) {425, "failed to connect"}));
 	datacon.sin_family = AF_INET;
 	datacon.sin_port = htons((uint16_t)g_svr_env.data_conn.port);
-	if (inet_aton(g_svr_env.data_conn.ip, &datacon.sin_addr))
-		puts("got network address");
+	if (inet_aton(g_svr_env.data_conn.ip, &datacon.sin_addr) == 0)
+		return (ft_send_responce((t_cmd_rsp){425, "failed to connect"}));
 	printf("ip to connect to: %s\n", inet_ntoa(datacon.sin_addr));
 	if ((g_svr_env.cln_data = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 	{

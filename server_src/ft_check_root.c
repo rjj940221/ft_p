@@ -19,7 +19,6 @@ char	*ft_check_root(char *str, int flags)
 	int		fd;
 
 	pwd = ft_get_pwd();
-	printf("checking path for ..[%s]\n", str);
 	if (strncmp(str, "..", 2) == 0 && (strlen(pwd) <=
 				strlen(g_svr_env.svrroot)))
 	{
@@ -29,11 +28,9 @@ char	*ft_check_root(char *str, int flags)
 	}
 	free(pwd);
 	path = ft_abspath(str);
-	printf("svr abs path [%s]\n", path);
 	if ((fd = open(path, flags)) != -1)
 	{
 		close(fd);
-		puts("returning abs path from check");
 		return (path);
 	}
 	free(path);
