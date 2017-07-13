@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_quit.c                                          :+:      :+:    :+:   */
+/*   ft_lmkdir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/07/11 16:19:12 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:47:16 by rojones          ###   ########.fr       */
+/*   Created: 2017/07/13 13:13:57 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/13 13:20:50 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p_client.h"
 
-void	ft_quit(char **argv)
+void	ft_lmkdir(char **argv)
 {
-	t_cmd		cmd;
-	t_cmd_rsp	*rsp;
+	pid_t	pid;
+	int		stat;
 
-	cmd.cmd = "QUIT";
-	cmd.av = (argv) ? ++argv : NULL;
-	ft_send_cmd(cmd);
-	rsp = ft_get_cmd_responce();
-	if (rsp->code >= 200 && rsp->code < 300)
+	if ((pid = fork()) != -1)
 	{
-		if (g_clt_env.svr_cmd_sock > -1)
-			close(g_clt_env.svr_cmd_sock);
-		ft_close_data_sock();
-		ft_cmd_responce_dell(&rsp);
-		exit(0);
+		if (pid == 0)
+		{
+			execv("/bin/mkdir", argv);
+			exit(0);
+		}
+		wait4(pid, &stat, 0, NULL);
 	}
-	else
-		ft_print_exit("Quit comand failed");
-	ft_cmd_responce_dell(&rsp);
 }

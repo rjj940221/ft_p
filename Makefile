@@ -9,25 +9,29 @@ SVR_SRC = server_src/ft_abs_path.c server_src/ft_get.c server_src/ft_port.c\
 		  server_src/ft_responce.c server_src/ft_cd.c server_src/ft_get_pwd.c\
 	  	  server_src/ft_put.c server_src/server.c server_src/ft_check_root.c\
 	  	  server_src/ft_ls.c server_src/ft_pwd.c server_src/server_loop.c\
-		  server_src/ft_cmd.c server_src/ft_quit.c server_src/suport.c
+		  server_src/ft_cmd.c server_src/ft_quit.c server_src/suport.c\
+		  server_src/ft_mkdir.c
 
 SVR_OBJ = build_svr/ft_abs_path.o build_svr/ft_get.o build_svr/ft_port.o\
   		  build_svr/ft_responce.o build_svr/ft_cd.o build_svr/ft_get_pwd.o\
 	  	  build_svr/ft_put.o build_svr/server.o build_svr/ft_check_root.o\
 	  	  build_svr/ft_ls.o build_svr/ft_pwd.o build_svr/server_loop.o\
-		  build_svr/ft_cmd.o build_svr/ft_quit.o build_svr/suport.o
+		  build_svr/ft_cmd.o build_svr/ft_quit.o build_svr/suport.o\
+		  build_svr/ft_mkdir.o
 
 CLN_SRC = client_src/client.c client_src/ft_receve_data.c client_src/ft_cd.c\
 		  client_src/ft_port.c client_src/ft_recponce.c client_src/ft_cmd.c\
 		  client_src/ft_put.c client_src/suport.c client_src/ft_get.c\
 		  client_src/ft_pwd.c client_src/lcd.c client_src/ft_lls.c\
-		  client_src/ft_lpwd.c client_src/ft_ls.c client_src/ft_quit.c
+		  client_src/ft_lmkdir.c client_src/ft_lpwd.c client_src/ft_ls.c\
+		  client_src/ft_mkdir.c client_src/ft_quit.c client_src/ft_search_builtin.c
 
 CLN_OBJ = build_cln/client.o build_cln/ft_receve_data.o build_cln/ft_cd.o\
   		  build_cln/ft_port.o build_cln/ft_recponce.o build_cln/ft_cmd.o\
 		  build_cln/ft_put.o build_cln/suport.o build_cln/ft_get.o\
 		  build_cln/ft_pwd.o build_cln/ft_lcd.o build_cln/ft_lls.o\
-		  build_cln/ft_lpwd.o build_cln/ft_ls.o build_cln/ft_quit.o
+		  build_cln/ft_lmkdir.o build_cln/ft_lpwd.o build_cln/ft_ls.o\
+		  build_cln/ft_mkdir.o build_cln/ft_quit.o build_cln/ft_search_builtin.o
 
 all : lft $(SVR_NAME) $(CLN_NAME)
 

@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/12 07:35:32 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/12 11:35:59 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:05:25 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_cmd	*ft_parse_cmd(char *data)
 		return (NULL);
 	tarr = ft_strsplit(data, ' ');
 	re->cmd = ft_strdup(tarr[0]);
-	re->av = ft_strarrdup((const char **) &tarr[1]);
+	re->av = ft_strarrdup((const char **)&tarr[1]);
 	ft_strarrdel(&tarr);
 	return (re);
 }
@@ -76,7 +76,7 @@ t_cmd	*ft_get_cmd(void)
 	char			*data;
 	t_cmd			*tmp;
 	char			buf[2];
-	t_bool 			read;
+	t_bool			read;
 	unsigned char	r;
 
 	read = 1;

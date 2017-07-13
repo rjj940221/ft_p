@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:13:48 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/12 07:37:19 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:01:27 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_get_check(char **av, size_t *size)
 	int			fd;
 	struct stat	stat;
 	char		*data;
-	char 		*path;
+	char		*path;
 
 	if ((path = ft_check_root(av[0], O_RDONLY)) == NULL)
 	{

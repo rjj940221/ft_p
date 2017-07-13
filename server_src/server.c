@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:39:03 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/12 10:02:40 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:00:52 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		main(int ac, char **av)
 	else
 	{
 		printf("please use %s [-root /serverroot] port_num "
-					   "\n\te.g %s -root ~/Descktop 8080\n", av[0], av[0]);
+				"\n\te.g %s -root ~/Descktop 8080\n", av[0], av[0]);
 		return (0);
 	}
 	if (g_svr_env.svrroot == NULL)

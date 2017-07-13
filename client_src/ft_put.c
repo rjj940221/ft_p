@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 16:08:24 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:46:31 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:16:45 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	**set_av(char **argv)
 
 	if (!(av = malloc(2 * sizeof(char *))))
 		return (NULL);
-	av[0] = (ft_strchr(argv[1], '/')) ? ft_strdup(ft_strchr(argv[1], '/')) : ft_strdup(argv[1]);
+	av[0] = (ft_strchr(argv[1], '/')) ? ft_strdup(ft_strchr(argv[1], '/')) :
+		ft_strdup(argv[1]);
 	av[1] = NULL;
 	return (av);
 }
@@ -30,12 +31,21 @@ char	*ft_put_init(char **argv, size_t *len)
 	struct stat	stat;
 
 	if (!argv || !argv[1] || (fd = open(argv[1], O_RDONLY)) == -1)
+	{
+		ft_putstr("\x1b[31mERROR: failed to open local file\x1b[0m\n");
 		return (NULL);
+	}
 	if (fstat(fd, &stat) == -1)
+	{
+		ft_putstr("\x1b[31mERROR: failed get file metadata\x1b[0m\n");
 		return (NULL);
+	}
 	if ((data = mmap(0, (size_t)stat.st_size, PROT_READ,
 					MAP_FILE | MAP_SHARED, fd, 0)) == MAP_FAILED)
+	{
+		ft_putstr("\x1b[31mERROR: failed to get file content\x1b[0m\n");
 		return (NULL);
+	}
 	*len = (size_t)stat.st_size;
 	return (data);
 }

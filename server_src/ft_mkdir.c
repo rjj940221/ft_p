@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lcd.c                                           :+:      :+:    :+:   */
+/*   ft_mkdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/07/13 09:11:44 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/13 13:23:12 by rojones          ###   ########.fr       */
+/*   Created: 2017/07/13 12:59:03 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/13 12:59:38 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_p_client.h"
+#include "ft_p_server.h"
 
-void	ft_lcd(char **argv)
+void	ft_mkdir(t_cmd cmd)
 {
-	static char	*last = NULL;
-	char		*tmp;
-	int			ch;
+	char	*path;
 
-	tmp = ft_get_pwd();
-	if (ft_strcmp(argv[1], "-") == 0 && last)
+	if (cmd.av[0] == NULL)
+		ft_send_responce((t_cmd_rsp){501, "No path specified"});
+	else
 	{
-		if ((ch = chdir(last)) == 0)
-		{
-			ft_strdel(&last);
-			last = tmp;
-		}
+		path = ft_abspath(cmd.av[0]);
+		if (mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0)
+			ft_send_responce((t_cmd_rsp){250, path});
+		else
+			ft_send_responce((t_cmd_rsp){550, "failed to make directory"});
+		ft_strdel(&path);
 	}
-	else if ((ch = chdir(argv[1])) == 0)
-	{
-		ft_strdel(&last);
-		last = tmp;
-	}
-	if (ch != 0)
-		ft_strdel(&tmp);
-	printf("set last to [%s]\n", last);
 }

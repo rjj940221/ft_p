@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 16:19:55 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:51:34 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:12:33 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_bool	ft_check_eol(char buf[2], unsigned char *r)
 	return (1);
 }
 
-void	ft_close_data_sock()
+void	ft_close_data_sock(void)
 {
 	close(g_clt_env.data_sock);
 	g_clt_env.data_sock = -1;

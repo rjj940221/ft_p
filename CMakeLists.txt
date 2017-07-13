@@ -20,7 +20,7 @@ set(SVR_SRC
         server_src/server.c
         server_src/server_loop.c
         server_src/suport.c
-        ft_p.h)
+        ft_p.h server_src/ft_mkdir.c)
 set(LIB_SRC
         libft/ft_atoi.c
         libft/ft_atoi_base.c
@@ -119,7 +119,12 @@ set(CLN_SRC
         client_src/ft_quit.c
         client_src/ft_receve_data.c
         client_src/suport.c
-        ft_p.h client_src/ft_cmd.c client_src/ft_recponce.c client_src/ft_lpwd.c)
+        client_src/ft_cmd.c
+        client_src/ft_recponce.c
+        client_src/ft_lpwd.c
+        client_src/ft_lmkdir.c
+        client_src/ft_mkdir.c
+        ft_p.h client_src/ft_search_builtin.c)
 
 include_directories(libft)
 

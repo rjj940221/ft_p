@@ -27,6 +27,7 @@ void	search_builin(t_cmd cmd)
 		tmp++;
 	}
 	printf("\x1b[mError: Command not recognised '%s'\n\x1b[0m", cmd.cmd);
+	ft_send_responce((t_cmd_rsp){502, "Command not recognised"});
 }
 
 void	chiled(void)

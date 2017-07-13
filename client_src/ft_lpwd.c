@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/13 09:11:04 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/13 09:11:12 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:12:51 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		ft_lpwd(char **argv)
 		if (data)
 			printf("%s\n", data);
 		else
-			printf("\x1b[31mERROR: %s\x1b[0m\n",strerror(errno));
+			printf("\x1b[31mERROR: %s\x1b[0m\n", strerror(errno));
 		ft_strdel(&data);
 	}
 }

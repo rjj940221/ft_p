@@ -34,33 +34,14 @@ void		connect_to_server(char **av)
 	ft_port(0);
 }
 
-void		search_builin(char *line)
-{
-	char			**tav;
-	t_builtin_cmd	*tmp;
 
-	tav = ft_strsplit_fn(line, isspace);
-	tmp = g_builtin_cmd;
-	while (tmp->cmd)
-	{
-		if (strcmp(tav[0], tmp->cmd) == 0)
-		{
-			(*tmp->fnc)(tav);
-			ft_strarrdel(&tav);
-			return ;
-		}
-		tmp++;
-	}
-	printf("\x1b[mError: Command not recognised'%s'\n\x1b[0m", tav[0]);
-	ft_strarrdel(&tav);
-}
 
 void		ft_process_rsp(t_cmd_rsp rsp)
 {
 	if (rsp.code >= 200 && rsp.code < 300)
-		printf("SUCCESS(%d): %s\n", rsp.code, rsp.msg);
+		printf("\x1b[32mSUCCESS(%d):\x1b[0m %s\n", rsp.code, rsp.msg);
 	if (rsp.code >= 300 && rsp.code < 400)
-		printf("PENDING(%d): %s\n", rsp.code, rsp.msg);
+		printf("\x1b[33mPENDING(%d):\x1b[0m %s\n", rsp.code, rsp.msg);
 	if (rsp.code >= 400 && rsp.code < 600)
 		printf("\x1b[31mERROR(%d):\x1b[0m %s\n", rsp.code, rsp.msg);
 	g_clt_env.wait_rsp = FALSE;
@@ -86,6 +67,12 @@ void		input_loop(void)
 	}
 }
 
+static void catch_inturupt(int signo)
+{
+	printf("SIGNAL: %d\n", signo);
+	ft_quit(NULL);
+}
+
 int			main(int ac, char **av)
 {
 	if (ac < 3 || check_port(av[2]) == -1)
@@ -94,6 +81,8 @@ int			main(int ac, char **av)
 				"<port>'\n\te.g. %s localhost 8080", av[0], av[0]);
 		exit(1);
 	}
+	if (signal(SIGINT, catch_inturupt) == SIG_ERR)
+		ft_print_exit("failed to set up interrupt catch");
 	if ((g_clt_env.svr_cmd_sock =
 				socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 		ft_print_exit("failed to create socket");

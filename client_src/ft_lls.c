@@ -6,16 +6,16 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/13 09:11:34 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/13 09:11:37 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 13:21:21 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p_client.h"
 
-void ft_lls(char **argv)
+void	ft_lls(char **argv)
 {
-	pid_t pid;
-	int stat;
+	pid_t	pid;
+	int		stat;
 
 	if ((pid = fork()) != -1)
 	{
