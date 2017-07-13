@@ -20,12 +20,14 @@ SVR_OBJ = build_svr/ft_abs_path.o build_svr/ft_get.o build_svr/ft_port.o\
 CLN_SRC = client_src/client.c client_src/ft_receve_data.c client_src/ft_cd.c\
 		  client_src/ft_port.c client_src/ft_recponce.c client_src/ft_cmd.c\
 		  client_src/ft_put.c client_src/suport.c client_src/ft_get.c\
-		  client_src/ft_pwd.c client_src/ft_ls.c client_src/ft_quit.c
+		  client_src/ft_pwd.c client_src/lcd.c client_src/ft_lls.c\
+		  client_src/ft_lpwd.c client_src/ft_ls.c client_src/ft_quit.c
 
 CLN_OBJ = build_cln/client.o build_cln/ft_receve_data.o build_cln/ft_cd.o\
   		  build_cln/ft_port.o build_cln/ft_recponce.o build_cln/ft_cmd.o\
 		  build_cln/ft_put.o build_cln/suport.o build_cln/ft_get.o\
-		  build_cln/ft_pwd.o build_cln/ft_ls.o build_cln/ft_quit.o
+		  build_cln/ft_pwd.o build_cln/ft_lcd.o build_cln/ft_lls.o\
+		  build_cln/ft_lpwd.o build_cln/ft_ls.o build_cln/ft_quit.o
 
 all : lft $(SVR_NAME) $(CLN_NAME)
 

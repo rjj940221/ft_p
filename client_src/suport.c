@@ -47,3 +47,12 @@ void	ft_close_data_sock()
 	close(g_clt_env.data_sock);
 	g_clt_env.data_sock = -1;
 }
+
+char	*ft_get_pwd(void)
+{
+	char *buff;
+
+	buff = NULL;
+	buff = getcwd(buff, MAXPATHLEN);
+	return (buff);
+}

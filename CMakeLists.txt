@@ -109,6 +109,8 @@ set(CLN_SRC
         client_src/client.c
         client_src/ft_cd.c
         client_src/ft_get.c
+        client_src/ft_lcd.c
+        client_src/ft_lls.c
         client_src/ft_ls.c
         client_src/ft_p_client.h
         client_src/ft_port.c
@@ -117,7 +119,7 @@ set(CLN_SRC
         client_src/ft_quit.c
         client_src/ft_receve_data.c
         client_src/suport.c
-        ft_p.h client_src/ft_cmd.c client_src/ft_recponce.c)
+        ft_p.h client_src/ft_cmd.c client_src/ft_recponce.c client_src/ft_lpwd.c)
 
 include_directories(libft)
 

@@ -33,7 +33,7 @@ void	chiled(void)
 {
 	t_cmd	*cmd;
 
-//	close(g_svr_env.svr_id);
+	close(g_svr_env.svr_id);
 	while (1)
 	{
 		cmd = ft_get_cmd();
@@ -55,7 +55,7 @@ void	perant(pid_t pid)
 
 void	server_loop(void)
 {
-//	pid_t			pid;
+	pid_t			pid;
 	t_tcp_sock_in	client_sock;
 	int				clientsize;
 
@@ -69,14 +69,14 @@ void	server_loop(void)
 		else
 		{
 			printf("got client %s\n", inet_ntoa(client_sock.sin_addr));
-		//	pid = fork();
-		//	if (pid > -1)
-		//	{
-		//		if (pid == 0)
+			pid = fork();
+			if (pid > -1)
+			{
+				if (pid == 0)
 					chiled();
-		//		else
-		//			perant(pid);
-		//	}
+				else
+					perant(pid);
+			}
 		}
 	}
 }

@@ -31,7 +31,7 @@ void		connect_to_server(char **av)
 	if (connect(g_clt_env.svr_cmd_sock,
 				(const struct sockaddr *)&server, sizeof(server)) < 0)
 		ft_print_exit("failed to create command connection");
-	ft_port(8800);
+	ft_port(0);
 }
 
 void		search_builin(char *line)

@@ -30,6 +30,7 @@
 # include <printf.h>
 # include <stdio.h>
 # include <sys/param.h>
+# include <sys/errno.h>
 
 
 typedef struct s_clt_env
@@ -54,9 +55,12 @@ int			check_port(const char *str);
 void		ft_print_exit(char *str);
 void		ft_get(char **argv);
 void		ft_put(char **argv);
+void 		ft_lls(char **argv);
 void		ft_ls(char **argv);
 void		ft_cd(char **argv);
 void		ft_pwd(char **argv);
+void 		ft_lcd(char **argv);
+void		ft_lpwd(char **argv);
 void		ft_quit(char **argv);
 void 		ft_port(int port);
 t_cmd_rsp	*ft_get_cmd_responce();
@@ -67,12 +71,17 @@ char		*ft_get_addr_str(int sock_id);
 void 		ft_send_cmd(t_cmd cmd);
 size_t		ft_receve_data(char **data);
 void 		ft_data_connection();
+char		*ft_get_pwd(void);
 t_bool		ft_check_eol(char buf[2], unsigned char *r);
 
 
+
 static t_builtin_cmd g_builtin_cmd[] = {
-		{"ls",ft_ls},
+		{"lls", ft_lls},
+		{"ls", ft_ls},
+		{"lpwd", ft_lpwd},
 		{"pwd",ft_pwd},
+		{"lcd", ft_lcd},
 		{"cd", ft_cd},
 		{"get", ft_get},
 		{"put", ft_put},
