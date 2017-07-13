@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:46:40 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 10:49:35 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 11:45:32 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	search_builin(t_cmd cmd)
 {
-	t_builtin_cmd *tmp;
+	t_builtin_cmd	*tmp;
 
 	tmp = g_builtin_cmd;
 	while (tmp->cmd)
@@ -29,22 +29,23 @@ void	search_builin(t_cmd cmd)
 	printf("\x1b[mError: Command not recognised '%s'\n\x1b[0m", cmd.cmd);
 }
 
-void	chiled()
+void	chiled(void)
 {
-	t_cmd cmd;
+	t_cmd	*cmd;
 
-	close(g_svr_env.svr_id);
+//	close(g_svr_env.svr_id);
 	while (1)
 	{
 		cmd = ft_get_cmd();
-		search_builin(cmd);
+		search_builin(*cmd);
+		ft_cmd_del(&cmd);
 	}
 }
 
 void	perant(pid_t pid)
 {
-	pid_t perant;
-	int stat;
+	pid_t	perant;
+	int		stat;
 
 	perant = wait4(pid, &stat, WNOHANG, 0);
 	if (perant < 0)
@@ -52,9 +53,9 @@ void	perant(pid_t pid)
 	close(g_svr_env.cln_cmd);
 }
 
-void server_loop()
+void	server_loop(void)
 {
-	pid_t			pid;
+//	pid_t			pid;
 	t_tcp_sock_in	client_sock;
 	int				clientsize;
 
@@ -68,14 +69,14 @@ void server_loop()
 		else
 		{
 			printf("got client %s\n", inet_ntoa(client_sock.sin_addr));
-			pid = fork();
-			if (pid > -1)
-			{
-				if (pid == 0)
+		//	pid = fork();
+		//	if (pid > -1)
+		//	{
+		//		if (pid == 0)
 					chiled();
-				else
-					perant(pid);
-			}
+		//		else
+		//			perant(pid);
+		//	}
 		}
 	}
 }

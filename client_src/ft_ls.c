@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 12:48:38 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:40:23 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 10:09:55 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,38 +31,35 @@ char	*ft_ls_get_data(void)
 
 void	ft_ls_get_responce(void)
 {
-	t_cmd_rsp	rsp;
+	t_cmd_rsp	*rsp;
 	char		*data;
 
 	rsp = ft_get_cmd_responce();
-	ft_process_rsp(rsp);
-	if (rsp.code == 150 || rsp.code == 125)
+	ft_process_rsp(*rsp);
+	if (rsp->code == 150 || rsp->code == 125)
 	{
-		if (rsp.code == 150)
+		if (rsp->code == 150)
 			ft_data_connection();
 		data = ft_ls_get_data();
+		ft_cmd_responce_dell(&rsp);
 		rsp = ft_get_cmd_responce();
-		ft_process_rsp(rsp);
-		if (rsp.code >= 200 && rsp.code < 300)
+		ft_process_rsp(*rsp);
+		if (rsp->code >= 200 && rsp->code < 300)
 			printf("%s\n", data);
-		if (rsp.code == 226)
-		{
-			close(g_clt_env.data_sock);
-			g_clt_env.data_sock = -1;
-		}
-		if (data)
-			free(data);
+		if (rsp->code == 226)
+			ft_close_data_sock();
+		ft_strdel(&data);
 	}
+	ft_cmd_responce_dell(&rsp);
 }
 
 void	ft_ls(char **argv)
 {
 	t_cmd		cmd;
 
-	ft_port(8800);
 	cmd.cmd = "LIST";
 	cmd.av = NULL;
-	argv = argv;
+	argv = NULL;
 	ft_send_cmd(cmd);
 	ft_ls_get_responce();
 }

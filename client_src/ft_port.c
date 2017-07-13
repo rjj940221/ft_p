@@ -63,7 +63,7 @@ void	ft_data_connection(void)
 
 void	ft_port(int port)
 {
-	t_cmd_rsp	rsp;
+	t_cmd_rsp	*rsp;
 	t_cmd		cmd;
 
 	cmd.cmd = "PORT";
@@ -75,8 +75,10 @@ void	ft_port(int port)
 	}
 	cmd.av = (char *[]) {ft_get_addr_str(g_clt_env.data_chanle), NULL};
 	ft_send_cmd(cmd);
+	ft_strdel(&cmd.av[0]);
 	rsp = ft_get_cmd_responce();
-	ft_process_rsp(rsp);
-	if (rsp.code >= 400 && rsp.code < 600)
+	ft_process_rsp(*rsp);
+	if (rsp->code >= 400 && rsp->code < 600)
 		ft_print_exit("failed to create data port");
+	ft_cmd_responce_dell(&rsp);
 }

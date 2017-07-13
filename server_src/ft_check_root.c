@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:12:55 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 10:13:32 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 07:41:47 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ char	*ft_check_root(char *str, int flags)
 		return (path);
 	}
 	free(path);
-	return NULL;
+	return (NULL);
 }

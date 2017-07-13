@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 16:24:48 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:25:38 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/13 07:24:46 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ void	ft_send_cmd(t_cmd cmd)
 	data = get_cmd_str(cmd);
 	if (send(g_clt_env.svr_cmd_sock, data, strlen(data), 0) < 0)
 		ft_print_exit("Failed to send command to server");
+	ft_strdel(&data);
 }

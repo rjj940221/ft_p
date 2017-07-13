@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:37:59 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 10:38:22 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 10:03:04 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	ft_pwd(t_cmd cmd)
 {
-	char	 *pwd;
+	char	*pwd;
 
+	cmd.cmd = "";
 	pwd = ft_get_pwd();
 	if (pwd)
 	{

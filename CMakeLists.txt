@@ -108,7 +108,6 @@ set(LIB_SRC
 set(CLN_SRC
         client_src/client.c
         client_src/ft_cd.c
-        client_src/ft_cmd_chanle.c
         client_src/ft_get.c
         client_src/ft_ls.c
         client_src/ft_p_client.h

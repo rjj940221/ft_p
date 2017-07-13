@@ -41,3 +41,9 @@ t_bool	ft_check_eol(char buf[2], unsigned char *r)
 		*r = 0;
 	return (1);
 }
+
+void	ft_close_data_sock()
+{
+	close(g_clt_env.data_sock);
+	g_clt_env.data_sock = -1;
+}

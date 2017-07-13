@@ -12,33 +12,41 @@
 
 #include "ft_p_client.h"
 
-void	ft_get_data_responce(int fd, char *fname)
+void	ft_get_process_rsp(int fd, char *fname, t_cmd_rsp *rsp)
 {
-	t_cmd_rsp	rsp;
-	char		*data;
+	t_cmd_rsp	*tmp;
 	size_t		data_len;
+	char		*data;
 
-	rsp = ft_get_cmd_responce();
-	ft_process_rsp(rsp);
-	if (rsp.code == 150 || rsp.code == 125)
-	{
-		if (rsp.code == 150)
-			ft_data_connection();
-		data_len = ft_receve_data(&data);
-		rsp = ft_get_cmd_responce();
-		ft_process_rsp(rsp);
-		if (rsp.code >= 200 && rsp.code < 300)
-			write(fd, data, data_len);
-		else
-			unlink(fname);
-		if (rsp.code == 226)
-		{
-			close(g_clt_env.data_sock);
-			g_clt_env.data_sock = -1;
-		}
-	}
+	if (rsp->code == 150)
+		ft_data_connection();
+	data_len = ft_receve_data(&data);
+	tmp = ft_get_cmd_responce();
+	ft_process_rsp(*tmp);
+	if (tmp->code >= 200 && tmp->code < 300)
+		write(fd, data, data_len);
 	else
 		unlink(fname);
+	if (tmp->code == 226)
+	{
+		close(g_clt_env.data_sock);
+		g_clt_env.data_sock = -1;
+	}
+	ft_cmd_responce_dell(&tmp);
+	ft_strdel(&data);
+}
+
+void	ft_get_data_responce(int fd, char *fname)
+{
+	t_cmd_rsp	*rsp;
+
+	rsp = ft_get_cmd_responce();
+	ft_process_rsp(*rsp);
+	if (rsp->code == 150 || rsp->code == 125)
+		ft_get_process_rsp(fd, fname, rsp);
+	else
+		unlink(fname);
+	ft_cmd_responce_dell(&rsp);
 }
 
 void	ft_get(char **argv)

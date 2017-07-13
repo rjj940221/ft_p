@@ -29,3 +29,23 @@ char	*ft_strdup(const char *str)
 	}
 	return (re);
 }
+
+char	**ft_strarrdup(const char **strarr)
+{
+	char	**re;
+	size_t	i;
+
+	i = 0;
+	while (strarr && strarr[i])
+		i++;
+	if (!(re = (char **)malloc((sizeof(char *) * (i + 1)))))
+		return (NULL);
+	i = 0;
+	while (strarr[i])
+	{
+		re[i] = ft_strdup(strarr[i]);
+		i++;
+	}
+	re[i] = NULL;
+	return (re);
+}

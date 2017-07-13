@@ -1,6 +1,14 @@
-//
-// Created by rojones on 2017/07/06.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_p_client.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/12 10:04:52 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/12 10:05:36 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef FT_P_CLIENT_H
 # define FT_P_CLIENT_H
@@ -16,7 +24,7 @@
 # include <sys/mman.h>
 # include <arpa/inet.h>
 # include "../ft_p.h"
-# include <libft.h>
+# include "../libft/libft.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <printf.h>
@@ -51,13 +59,15 @@ void		ft_cd(char **argv);
 void		ft_pwd(char **argv);
 void		ft_quit(char **argv);
 void 		ft_port(int port);
-t_cmd_rsp	ft_get_cmd_responce();
+t_cmd_rsp	*ft_get_cmd_responce();
+void		ft_cmd_responce_dell(t_cmd_rsp **rsp);
+void		ft_close_data_sock();
 void 		ft_process_rsp(t_cmd_rsp	rsp);
 char		*ft_get_addr_str(int sock_id);
 void 		ft_send_cmd(t_cmd cmd);
 size_t		ft_receve_data(char **data);
 void 		ft_data_connection();
-unsigned char	ft_check_eol(char buf[2], unsigned char *r);
+t_bool		ft_check_eol(char buf[2], unsigned char *r);
 
 
 static t_builtin_cmd g_builtin_cmd[] = {
@@ -67,7 +77,7 @@ static t_builtin_cmd g_builtin_cmd[] = {
 		{"get", ft_get},
 		{"put", ft_put},
 		{"quit", ft_quit},
-		NULL
+		{NULL, NULL}
 };
 
 #endif

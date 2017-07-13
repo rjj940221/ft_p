@@ -6,24 +6,25 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:30:52 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 10:36:11 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 07:38:07 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p_server.h"
 
-char	*ft_ls_get_data()
+char	*ft_ls_get_data(void)
 {
-	DIR *dir;
-	struct dirent *dre;
-	char	*data;
+	DIR				*dir;
+	struct dirent	*dre;
+	char			*data;
 
 	if (!(dir = opendir(".")))
 	{
-		ft_send_responce((t_cmd_rsp) {451, "could not open directory"});
+		ft_send_responce((t_cmd_rsp){451, "could not open directory"});
 		return (NULL);
 	}
 	errno = 0;
+	data = NULL;
 	while ((dre = readdir(dir)) != NULL)
 	{
 		data = ft_strjoin_free_l(data, dre->d_name);
@@ -35,7 +36,7 @@ char	*ft_ls_get_data()
 	return (data);
 }
 
-void ft_ls(t_cmd cmd)
+void	ft_ls(t_cmd cmd)
 {
 	char	*data;
 
@@ -49,16 +50,13 @@ void ft_ls(t_cmd cmd)
 		ft_send_responce((t_cmd_rsp) {150, "sending data"});
 		ft_connect_g_conn();
 	}
-	if (g_svr_env.cln_data != -1 && send(g_svr_env.cln_data,data, ft_strlen(data), 0) != -1)
-	{
-		ft_send_responce((t_cmd_rsp) {226, "data sent"});
-		close(g_svr_env.cln_data);
-		g_svr_env.cln_data = -1;
-	}
+	if (g_svr_env.cln_data != -1 && send(g_svr_env.cln_data, data,
+			ft_strlen(data), 0) != -1)
+		ft_send_responce((t_cmd_rsp){226, "data sent"});
 	else
-	{
-		ft_send_responce((t_cmd_rsp) {426, "data send failed closing data connection"});
-		close(g_svr_env.cln_data);
-	}
-	return;
+		ft_send_responce((t_cmd_rsp){426,
+				"data send failed closing data connection"});
+	close(g_svr_env.cln_data);
+	g_svr_env.cln_data = -1;
+	ft_strdel(&data);
 }

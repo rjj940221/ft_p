@@ -1,12 +1,20 @@
-//
-// Created by Robert JONES on 2017/07/11.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_responce.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/12 07:19:34 by rojones           #+#    #+#             */
+/*   Updated: 2017/07/12 07:22:44 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_p_server.h"
 
-char *get_responce_str(t_cmd_rsp res)
+char		*get_responce_str(t_cmd_rsp res)
 {
-	char *data;
+	char	*data;
 
 	data = ft_itoa((int)res.code);
 	data = ft_strjoin_free_l(data, " ");
@@ -15,10 +23,9 @@ char *get_responce_str(t_cmd_rsp res)
 	return (data);
 }
 
-
-void	ft_send_responce(t_cmd_rsp res)
+void		ft_send_responce(t_cmd_rsp res)
 {
-	char *data;
+	char	*data;
 
 	data = get_responce_str(res);
 	if (send(g_svr_env.cln_cmd, data, strlen(data), 0) < 0)
@@ -31,22 +38,22 @@ void	ft_send_responce(t_cmd_rsp res)
 		free(data);
 }
 
-t_cmd_rsp ft_parse_cmd_responce(char *data)
+t_cmd_rsp	ft_parse_cmd_responce(char *data)
 {
-	t_cmd_rsp rsp;
-	char *tmp;
+	t_cmd_rsp	rsp;
+	char		*tmp;
 
-	rsp.code = (short) atoi(data);
+	rsp.code = (short)ft_atoi(data);
 	tmp = strchr(data, ' ');
 	rsp.msg = (tmp) ? strdup(++tmp) : NULL;
 	return (rsp);
 }
 
-t_cmd_rsp ft_get_responce()
+t_cmd_rsp	ft_get_responce(void)
 {
-	char 			*data;
+	char			*data;
 	t_cmd_rsp		tmp;
-	char 			buf[2];
+	char			buf[2];
 	unsigned char	read;
 	unsigned char	r;
 

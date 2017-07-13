@@ -10,7 +10,7 @@
 # include <stdlib.h>
 # include <ctype.h>
 # include <stdio.h>
-# include <libft.h>
+# include "../libft/libft.h"
 # include <dirent.h>
 # include <sys/errno.h>
 # include <fcntl.h>
@@ -65,7 +65,8 @@ void		ft_ls(t_cmd cmd);
 void		ft_pwd(t_cmd cmd);
 void		ft_get(t_cmd cmd);
 void 		ft_send_cmd(t_cmd cmd);
-t_cmd		ft_get_cmd();
+void		ft_cmd_del(t_cmd **cmd);
+t_cmd		*ft_get_cmd();
 
 
 static t_builtin_cmd g_builtin_cmd[] = {
@@ -76,6 +77,6 @@ static t_builtin_cmd g_builtin_cmd[] = {
 		{"RETR", ft_get},
 		{"LIST", ft_ls},
 		{"STOR", ft_put},
-		NULL
+		{NULL, NULL}
 };
 #endif

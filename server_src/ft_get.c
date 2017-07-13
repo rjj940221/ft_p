@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 10:13:48 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 10:28:36 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 07:37:19 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ char	*ft_get_check(char **av, size_t *size)
 	int			fd;
 	struct stat	stat;
 	char		*data;
+	char 		*path;
 
-	if (ft_check_root(av[0], O_RDONLY) == NULL)
+	if ((path = ft_check_root(av[0], O_RDONLY)) == NULL)
 	{
 		ft_send_responce((t_cmd_rsp){501, "invalid server path"});
 		return (NULL);
@@ -30,20 +31,21 @@ char	*ft_get_check(char **av, size_t *size)
 		close(fd);
 		return (NULL);
 	}
-	if ((data = mmap(0, (size_t) stat.st_size, PROT_READ, MAP_FILE |
+	if ((data = mmap(0, (size_t)stat.st_size, PROT_READ, MAP_FILE |
 					MAP_SHARED, fd, 0)) == MAP_FAILED)
 	{
 		ft_send_responce((t_cmd_rsp){450, "Could not get file data"});
 		return (NULL);
 	}
 	*size = (size_t)stat.st_size;
+	free(path);
 	return (data);
 }
 
 void	ft_get(t_cmd cmd)
 {
 	char		*data;
-	size_t 		size;
+	size_t		size;
 
 	if ((data = ft_get_check(cmd.av, &size)) == NULL)
 		return ;
@@ -55,17 +57,12 @@ void	ft_get(t_cmd cmd)
 		ft_connect_g_conn();
 	}
 	if (g_svr_env.cln_data != -1 && send(g_svr_env.cln_data,
-			   data, (size_t) size, 0) != -1)
-	{
+				data, (size_t)size, 0) != -1)
 		ft_send_responce((t_cmd_rsp) {226, "data sent"});
-		close(g_svr_env.cln_data);
-		g_svr_env.cln_data = -1;
-	}
 	else
-	{
 		ft_send_responce((t_cmd_rsp)
 				{426, "data send failed closing data connection"});
-		close(g_svr_env.cln_data);
-		g_svr_env.cln_data = -1;
-	}
+	close(g_svr_env.cln_data);
+	g_svr_env.cln_data = -1;
+	munmap(data, size);
 }

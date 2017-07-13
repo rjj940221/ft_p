@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/11 12:41:34 by rojones           #+#    #+#             */
-/*   Updated: 2017/07/11 16:38:00 by rojones          ###   ########.fr       */
+/*   Updated: 2017/07/12 10:22:33 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ void		search_builin(char *line)
 		if (strcmp(tav[0], tmp->cmd) == 0)
 		{
 			(*tmp->fnc)(tav);
+			ft_strarrdel(&tav);
 			return ;
 		}
 		tmp++;
 	}
 	printf("\x1b[mError: Command not recognised'%s'\n\x1b[0m", tav[0]);
+	ft_strarrdel(&tav);
 }
 
 void		ft_process_rsp(t_cmd_rsp rsp)
@@ -66,7 +68,7 @@ void		ft_process_rsp(t_cmd_rsp rsp)
 
 void		input_loop(void)
 {
-	t_cmd_rsp	rsp;
+	t_cmd_rsp	*rsp;
 	char		*line;
 
 	while (1)
@@ -74,8 +76,10 @@ void		input_loop(void)
 		if (g_clt_env.wait_rsp)
 		{
 			rsp = ft_get_cmd_responce();
-			ft_process_rsp(rsp);
+			ft_process_rsp(*rsp);
+			ft_cmd_responce_dell(&rsp);
 		}
+		ft_putstr("FTP$> ");
 		get_next_line(0, &line);
 		search_builin(line);
 		free(line);
@@ -84,14 +88,10 @@ void		input_loop(void)
 
 int			main(int ac, char **av)
 {
-	struct sockaddr_in	server;
-	struct hostent		*hp;
-	char				*line;
-
 	if (ac < 3 || check_port(av[2]) == -1)
 	{
-		printf("incorrect parameters please use '%s <hostname>
-				<port>'\n\te.g. %s localhost 8080", av[0], av[0]);
+		printf("incorrect parameters please use '%s <hostname> "
+				"<port>'\n\te.g. %s localhost 8080", av[0], av[0]);
 		exit(1);
 	}
 	if ((g_clt_env.svr_cmd_sock =

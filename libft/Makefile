@@ -6,7 +6,7 @@
 #    By: rojones <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/11 13:16:09 by rojones           #+#    #+#              #
-#    Updated: 2016/07/20 17:34:17 by rojones          ###   ########.fr        #
+#    Updated: 2017/07/12 09:13:59 by rojones          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libft.a
@@ -93,7 +93,7 @@ ft_strrchr.o : ft_strrchr.c
 	$(C) $(CFLAGS) ft_strrchr.c
 
 ft_strreplace_char.o : ft_strreplace_char.c
-    $(C) $(CFLAGS) ft_strreplace_char.c
+	$(C) $(CFLAGS) ft_strreplace_char.c
 
 ft_strstr.o : ft_strstr.c
 	$(C) $(CFLAGS) ft_strstr.c

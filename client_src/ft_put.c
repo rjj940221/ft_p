@@ -18,7 +18,7 @@ char	**set_av(char **argv)
 
 	if (!(av = malloc(2 * sizeof(char *))))
 		return (NULL);
-	av[0] = (ft_strchr(argv[1], '/')) ? ft_strchr(argv[1], '/') : argv[1];
+	av[0] = (ft_strchr(argv[1], '/')) ? ft_strdup(ft_strchr(argv[1], '/')) : ft_strdup(argv[1]);
 	av[1] = NULL;
 	return (av);
 }
@@ -45,26 +45,26 @@ void	ft_put(char **argv)
 	size_t		size;
 	char		*data;
 	t_cmd		cmd;
-	t_cmd_rsp	rsp;
+	t_cmd_rsp	*rsp;
 
 	if (!(data = ft_put_init(argv, &size)))
 		return ;
 	cmd.cmd = "STOR";
 	cmd.av = set_av(argv);
 	ft_send_cmd(cmd);
-	if (cmd.av)
-		free(cmd.av);
+	ft_strarrdel(&cmd.av);
 	rsp = ft_get_cmd_responce();
-	ft_process_rsp(rsp);
-	if (rsp.code == 150 || rsp.code == 126)
+	ft_process_rsp(*rsp);
+	if (rsp->code == 150 || rsp->code == 126)
 	{
-		if (rsp.code == 150)
+		if (rsp->code == 150)
 			ft_data_connection();
 		send(g_clt_env.data_sock, data, size, 0);
-		close(g_clt_env.data_sock);
-		g_clt_env.data_sock = -1;
+		ft_close_data_sock();
+		ft_cmd_responce_dell(&rsp);
+		rsp = ft_get_cmd_responce();
+		ft_process_rsp(*rsp);
 	}
-	rsp = ft_get_cmd_responce();
-	ft_process_rsp(rsp);
+	ft_cmd_responce_dell(&rsp);
 	munmap(data, size);
 }
